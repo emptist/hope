@@ -3,9 +3,9 @@ Meteor.subscribe "bsckpisChannel"
 Meteor.subscribe "hospitalsChannel"
 
 #------------------------ helpers ------------------------------------ 
-share.showAsEditMode = -> # was causing exeptions when put outside server & client folders
-	yes #Session.get "showButtons"
-share.logSet = (a,b) ->
+showAsEditMode = -> # was causing exeptions when put outside server & client folders
+	Session.get "showButtons"
+share.logSet = (a, b) ->
 	r = Session.set a, b
 	share.consolelog "now #{a} is #{b}"
 	r
@@ -28,13 +28,13 @@ share.getDepartmentObj = (e, t) ->
 	category: getValue "input#category"
 	departmentKPIs: []#getValue "ul#departmentKPIsTmp" # we should geKPIhe bsc object here
 share.viewDetail = (viewName, t)-> 
-	Backbone.history.navigate '/' + viewName + '&' + decodeURI t.find('#' + viewName).value,	true 
+	Backbone.history.navigate '/' + viewName + '&' + decodeURI t.find('#' + viewName).value, true 
 
 #------------------------ router ------------------------------------
 logSetCurrentView = (currentView)->
 	share.logSet "currentView", currentView
 
-HPMRouter = Backbone.Router.extend
+HOPERouter = Backbone.Router.extend
 	routes: # ! this order matters ! stupid!!
 		"": "main"
 		"bsckpis": "bsckpis"
@@ -55,8 +55,10 @@ HPMRouter = Backbone.Router.extend
 		logSetCurrentView decodeURI sp[0] # this could be everything that contains details
 		share.logSet "currentDetail",  decodeURI sp[1] # this leading to one detail of the viewed objected
 
-Meteor.startup -> # 开始历史记录
-	new HPMRouter
+#------------------------ do initiatings here -----------------------
+Meteor.startup -> # 开始
+	new HOPERouter
+	Session.set "showButtons",true
 	Backbone.history.start pushState: true
 
 #------------------------ Template.main------------------------------- 
@@ -67,15 +69,14 @@ Template.main.events
 		e.preventDefault()
 
 #------------------------- Template.header -----------------------------
-Template.header.rendered = -> Session.set "showButtons",true
-Template.header.currentMode = -> if share.showAsEditMode() then "打印模式" else "編輯模式"
-Template.header.showButtons = -> share.showAsEditMode()
+Template.header.currentMode = -> share.consolelog if showAsEditMode() is true then "打印模式" else "編輯模式"
+Template.header.showButtons = -> showAsEditMode()
 Template.header.adminLoggedIn = -> share.adminLoggedIn()
 Template.header.events
 	'click #bsckpis': -> Backbone.history.navigate '/bsckpis', true 
 	'click #departments': -> Backbone.history.navigate '/departments', true
 	'click #newKpiForm': ->	Backbone.history.navigate '/newKpiForm', true
 	'click #newDepartmentForm': -> Backbone.history.navigate '/newDepartmentForm', true
-	'click #printable': -> share.logSet "showButtons", not share.showAsEditMode()
+	'click #printable': -> Session.set "showButtons", not showAsEditMode()
 	#'click #hospitals': -> Backbone.history.navigate '/hospitals', true 
 	

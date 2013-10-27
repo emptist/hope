@@ -24,19 +24,11 @@ Meteor.methods
 
 	#--------------------------------------------------------
 
-	removeKPI: (id)->
-		removeFrom	share.KPIs, id 
-	removeHospital: (id)->
-		removeFrom	share.Hospitals, id 
-	removeDepartment: (id)->
-		removeFrom	share.Departments, id
-
-
-	kpi: (obj)-> 
-		upsertTo: share.KPIs, obj
-	department: (obj)->
-		upsertTo: share.Departments, obj
-	hospital: (obj)->
-		upsertTo: share.Hospitals, obj
+	removeKPI: (id)-> removeFrom share.KPIs, id 
+	removeDepartment: (id)-> removeFrom	share.Departments, id
+	#removeHospital: (id)-> removeFrom share.Hospitals, id 
+	kpi: (obj)-> upsertTo share.KPIs, obj
+	department: (obj)-> upsertTo share.Departments, obj
+	#hospital: (obj)-> upsertTo share.Hospitals, obj
 		
 			
