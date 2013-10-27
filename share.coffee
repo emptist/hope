@@ -18,5 +18,5 @@ share.adminLoggedIn = ->
 	currentUserEmail() in admins
 
 share.consolelog = (t)->
-	console.log t
+	console.log "in #{this._id}, #{this}:  #{t._id}, #{t}" 
 	t	

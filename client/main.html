@@ -1,18 +1,24 @@
 <template name="main">
+
 <header class="navbar" >
 	<div class="navbar-inner">
   		{{> header}}
 	</div>
 </header>
+
 <div id="main" class= "row-fluid" >
   {{#if adminLoggedIn}}
   	  {{> newKpiForm}}
-	  {{> bsckpis}}
 	  {{> newDepartmentForm}}
+	  
+	  {{> bsckpis}}
 	  {{> departments}}
   {{/if}}
 </div>
+
 </template>
+
+
 
 <template name="header">
 	<ul class="nav pull-right">
@@ -31,6 +37,9 @@
 {{/if}}
 </template>
 
+
+
+
 <template name="newKpiForm">
 {{#if show}}
 	<form class="newKpiForm">
@@ -48,6 +57,9 @@
 {{/if}}
 </template>
 
+
+
+
 <template name="newDepartmentForm">
 {{#if show}}
 	<div class="newDepartmentForm">
@@ -64,6 +76,8 @@
 {{/if}}
 </template>
 
+
+
 <template name="bsckpis">
 {{#if show}}
 	<div class="bsckpis">
@@ -74,6 +88,63 @@
 	</div>
 {{/if}}
 </template>
+
+
+
+<template name="kpi">
+{{#if editting}}
+	{{> editKpiForm}}
+{{else}}
+	{{> viewKpiForm}}
+{{/if}}
+</template>
+
+
+
+
+<template name="editKpiForm">
+{{#if show}}
+	<div class="editKpiForm">
+		<ul>
+			<li>一級維度 Perspective: <input type= "text" id="perspective" value={{perspective}} placeholder="perspective" /></li>
+			<li>二級維度 Category: <input type= "text" id="category" value={{category}} placeholder="category" /></li>
+			<li>指標名稱 Title: <input type="text" id="title" value={{title}} placeholder="title" /></li> 
+			<li>定義 Definition: <input type= "text" id="definition" value={{definition}} placeholder="definition" /></li>
+			<li>評分類型 Type: <input type= "text" id="type" value={{type}}  placeholder="type" /></li>  
+			<li>評分方法 Mesure: <input type= "text" id="mesure" value={{mesure}}  placeholder="mesure" /></li> 
+			<li>適用部門 Depts: <input type="text" id="depts" value={{depts}}  /></li>
+			<button id="save" class="btn btn-info"> 完成 </button>
+		</ul>
+	</div>
+{{/if}}
+</template>
+
+
+
+
+<template name="viewKpiForm">
+	<article class="viewKpiForm" >
+		<h4> 
+			{{#if showButtons}}
+			<button id="removeKPI" class="btn btn-danger btn-xs"> 删 </button>
+			<button id="editKpiForm" class="btn btn-info btn-xs"> 編 </button>
+			{{/if}} 
+			<a href="/perspective&{{perspective}}">{{perspective}}</a> {{category}} {{title}}
+		</h4>
+
+		<ul>
+			<li>定義: {{definition}}</li>
+			<li>數據類型: {{type}}</li>  
+			<li>評分方法: {{mesure}}</li>
+			<li>適用科室: {{depts}}</li>
+			<!--<li>createdOn: {{createdOn}}</li> </!-->
+		</ul>
+	</article>
+</template>
+
+
+
+
 
 <template name="departments">
 {{#if show}}
@@ -88,6 +159,5 @@
 	{{else}}
 		<input type="text" id="currentHospital" placeholder="currentHospital" />
 	{{/if}}
-	
 {{/if}}  
 </template>
