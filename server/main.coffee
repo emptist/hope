@@ -1,12 +1,14 @@
 Meteor.publish "bsckpisChannel" , -> 
-		share.KPIs.find()
+	share.KPIs.find()
 
-Meteor.publish "departmentsChannel" , -> 
-		share.Departments.find()
+Meteor.publish "teamsChannel" , -> 
+	share.Teams.find()
 
 Meteor.publish "hospitalsChannel" , -> 
-		share.Hospitals.find()
+	share.Hospitals.find()
 
+Meteor.publish "currentObjects" , -> 
+	share.CurrentObjects.find()
 
 
 removeFrom = (collection, id)->
@@ -30,11 +32,11 @@ insertInto = (collection, obj)->
 
 Meteor.methods
 	removeKPI: (id)-> removeFrom share.KPIs, id 
-	removeDepartment: (id)-> removeFrom	share.Departments, id
+	removeTeam: (id)-> removeFrom	share.Teams, id
 	#removeHospital: (id)-> removeFrom share.Hospitals, id 
 	
 	kpi: (obj)-> upsertTo share.KPIs, obj
-	department: (obj)-> upsertTo share.Departments, obj
+	team: (obj)-> upsertTo share.Teams, obj
 	#hospital: (obj)-> upsertTo share.Hospitals, obj
 		
 			

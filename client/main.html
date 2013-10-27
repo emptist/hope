@@ -9,10 +9,10 @@
 <div id="main" class= "row-fluid" >
   {{#if adminLoggedIn}}
   	  {{> newKpiForm}}
-	  {{> newDepartmentForm}}
+	  {{> newTeamForm}}
 	  
 	  {{> bsckpis}}
-	  {{> departments}}
+	  {{> teams}}
   {{/if}}
 </div>
 
@@ -30,8 +30,8 @@
 	{{#if showButtons}}
 	<button id="bsckpis" class="btn btn-primary" "navbar-btn">指標</button>	
 	<button id="newKpiForm" class="btn btn-warning" "navbar-btn">添加指標</button>	
-	<button id="departments" class="btn btn-info" "navebar-btn">Depts</button>
-	<button id="newDepartmentForm" class="btn btn-warning" "navebar-btn">添加Dept</button>
+	<button id="teams" class="btn btn-info" "navebar-btn">Depts</button>
+	<button id="newTeamForm" class="btn btn-warning" "navebar-btn">添加Dept</button>
 	<button id="printable" class="btn btn-default" "navbar-btn" >{{currentMode}}</button>
 	{{/if}}
 {{/if}}
@@ -58,23 +58,6 @@
 </template>
 
 
-
-
-<template name="newDepartmentForm">
-{{#if show}}
-	<div class="newDepartmentForm">
-		<input type="text" id="hospital"  value={{currentHospital}} placeholder="hospital" /> 
-		<input type="text" id="department"  placeholder="名稱" /> 
-		<input type="text" id="category"  placeholder="category" /> <br>
-		<!--
-		<ul id="departmentKPIsTmp">
-			{{> departmentKPIsTmp}}
-		</ul>
-		-->
-		<button id="save" class="btn btn-info"> 完成 </button>
-	</div>
-{{/if}}
-</template>
 
 
 
@@ -106,13 +89,13 @@
 {{#if show}}
 	<div class="editKpiForm">
 		<ul>
-			<li>一級維度 Perspective: <input type= "text" id="perspective" value={{perspective}} placeholder="perspective" /></li>
-			<li>二級維度 Category: <input type= "text" id="category" value={{category}} placeholder="category" /></li>
-			<li>指標名稱 Title: <input type="text" id="title" value={{title}} placeholder="title" /></li> 
-			<li>定義 Definition: <input type= "text" id="definition" value={{definition}} placeholder="definition" /></li>
-			<li>評分類型 Type: <input type= "text" id="type" value={{type}}  placeholder="type" /></li>  
-			<li>評分方法 Mesure: <input type= "text" id="mesure" value={{mesure}}  placeholder="mesure" /></li> 
-			<li>適用部門 Depts: <input type="text" id="depts" value={{depts}}  /></li>
+			<li>一級維度 <input type= "text" id="perspective" value={{perspective}} placeholder="perspective" /></li>
+			<li>二級維度 <input type= "text" id="category" value={{category}} placeholder="category" /></li>
+			<li>指標名稱 <input type="text" id="title" value={{title}} placeholder="title" /></li> 
+			<li>定義 <input type= "text" id="definition" value={{definition}} placeholder="definition" /></li>
+			<li>評分類型 <input type= "text" id="type" value={{type}}  placeholder="type" /></li>  
+			<li>評分方法 <input type= "text" id="mesure" value={{mesure}}  placeholder="mesure" /></li> 
+			<li>適用部門 <input type="text" id="depts" value={{depts}}  /></li>
 			<button id="save" class="btn btn-info"> 完成 </button>
 		</ul>
 	</div>
@@ -144,20 +127,108 @@
 
 
 
+<template name="newTeamForm">
+{{#if show}}
+	<div class="newTeamForm">
+		<input type="text" id="hospital"  value={{currentHospital}} placeholder="hospital" /> 
+		<input type="text" id="team"  placeholder="名稱" /> 
+		<input type="text" id="category"  placeholder="category" />
+		<div class="newTeamKPIForm" >
+			Finance <input type="text" id="weightFinance" class="input-mini" placeholder=0 /> <br> 
+			Client <input type="text" id="weightClient" class="input-mini" placeholder=0 /> <br>
+			Intern <input type="text" id="weightIntern" class="input-mini" placeholder=0 /> <br>
+			Study <input type="text" id="weightStudy" class="input-mini" placeholder=0 /> 
+		</div>
+		<button id="save" class="btn btn-info"> 完成 </button>
+	</div>
+{{/if}}
+</template>
 
 
-<template name="departments">
+<template name= "editTeamForm">
+{{#if show}}
+	<div class="newTeamForm">
+		
+		<input type="text" id="hospital" class="disabled" value={{hospital}} /> 
+		<input type="text" id="team"  value={{team}} /> 
+		<input type="text" id="category"  value={{category}} />
+		<div class="editTeamKPIForm" >
+			Finance <input type="text" id="weightFinance" class="input-mini" value={{weightFinance}} /> <br> 
+			Client <input type="text" id="weightClient" class="input-mini" value={{weightClient}} /> <br>
+			Intern <input type="text" id="weightIntern" class="input-mini" value={{weightIntern}} /> <br>
+			Study <input type="text" id="weightStudy" class="input-mini" value={{weightStudy}} /> 
+		</div>
+		<button id="save" class="btn btn-info"> 完成 </button>
+	</div>
+{{/if}}
+</template>
+
+<template name="newTeamKPIForm">
+<div class="newTeamKPIForm">
+	Finance <input type="text" id="weightFinance" class="input-mini" placeholder="weight" /> <br> 
+	Client <input type="text" id="weightClient" class="input-mini" placeholder="weight" /> <br>
+	Intern <input type="text" id="weightIntern" class="input-mini" placeholder="weight" /> <br>
+	Study <input type="text" id="weightStudy" class="input-mini" placeholder="weight" /> 
+</div>
+</template> 
+
+
+<template name="editTeamKPIForm">
+{{#if show}}
+<div class="editTeamKPIForm">
+	Finance <input type="text" id="weightFinance" class="input-mini" placeholder= {{this.weightFinance}}  /> <br> 
+	Client <input type="text" id="weightClient" class="input-mini" placeholder=0 /> <br>
+	Intern <input type="text" id="weightIntern" class="input-mini" placeholder=0 /> <br>
+	Study <input type="text" id="weightStudy" class="input-mini" placeholder=0 /> 
+</div>
+{{/if}}
+</template> 
+
+
+<template name="teams">
 {{#if show}}
 	{{#if currentHospital}}
-		<label> {{currentHospital}} </label>
-		<hr>
-		<div class="departments">
-			{{#each departments}}
-				{{indx}} {{category}} {{department}}
+		<div class="hospital">
+			<h3> {{currentHospital}} </h3>
+			<hr>
+		</div>
+		<div class="teams">
+			<ul class="teams">
+			{{#each teams}}
+				<li> {{> team}} </li> 
+				<hr>
 			{{/each}}
+			</ul>
 		</div>
 	{{else}}
 		<input type="text" id="currentHospital" placeholder="currentHospital" />
 	{{/if}}
 {{/if}}  
 </template>
+
+<template name= "team">
+{{#if editting}}	
+	{{> editTeamForm}}
+{{else}}
+	{{> viewTeamForm}}
+{{/if}}
+</template>
+
+<template name= "viewTeamForm">
+<article class="viewTeamForm">
+	<h4> 
+		{{#if showButtons}}
+			<button id="removeTeam" class="btn btn-danger btn-xs"> 删 </button>
+			<button id="editTeamForm" class="btn btn-info btn-xs"> 編 </button>
+		{{/if}} 
+ 		<a href="/team&{{team}}">{{team}}</a> {{category}}
+	 </h4>
+	 <div class="viewTeamKPIForm" >
+			Finance {{weightFinance}}  <br> 
+			Client {{weightClient}} <br>
+			Intern {{weightIntern}} <br>
+			Study {{weightStudy}} 
+		</div>
+</article>
+</template>
+
