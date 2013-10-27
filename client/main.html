@@ -1,0 +1,101 @@
+<template name="main">
+<header class="navbar" >
+	<div class="navbar-inner">
+  		{{> header}}
+	</div>
+</header>
+<div id="main" class= "row-fluid" >
+  {{#if adminLoggedIn}}
+  	  {{> newKpiForm}}
+	  {{> bsckpis}}
+	  {{> newDepartmentForm}}
+	  {{> departments}}
+	  <!--
+	  {{> newHospitalForm}}
+	  {{> hospitals}} 
+	  -->
+  {{/if}}
+</div>
+</template>
+
+<template name="header">
+	<ul class="nav pull-right">
+		<li>{{loginButtons}}</li>
+	</ul>
+<a class="brand" href="/"> JK </a>
+<h1><a href='/'> 醫院績效管理 HOPE </a></h1>
+{{#if adminLoggedIn}}
+	{{#if showButtons}}
+	<button id="bsckpis" class="btn btn-primary" "navbar-btn">指標</button>	
+	<button id="newKpiForm" class="btn btn-warning" "navbar-btn">添加指標</button>	
+	<button id="departments" class="btn btn-info" "navebar-btn">Depts</button>
+	<button id="newDepartmentForm" class="btn btn-warning" "navebar-btn">添加Dept</button>
+	<button id="printable" class="btn btn-default" "navbar-btn">{{currentMode}}</button>
+	<!--
+	<button id="hospitals" class="btn btn-success" "navbar-btn">醫院</button>
+	<button id="newHospitalForm" class="btn btn-warning" "navbar-btn">添加醫院</button>	
+	-->
+	{{/if}}
+{{/if}}
+</template>
+
+<template name="newKpiForm">
+{{#if show}}
+	<form class="newKpiForm">
+	<div class="controls">
+		<input type= "text" id="perspective"  placeholder="一級維度" />
+		<input type= "text" id="category"  placeholder="二級維度" />
+		<input type="text" id="title"  placeholder="指標名稱" /> 
+		<input type= "text" id="definition"  placeholder="定義" />
+		<input type= "text" id="type"   placeholder="評分類型" />  
+		<input type= "text" id="mesure"   placeholder="評分方法" /> 
+		<input type="text" id="depts"  placeholder="適用部門" />
+		<button id="save" class="btn btn-info"> 完成 </button>
+	</div>
+	</form>
+{{/if}}
+</template>
+
+<template name="newDepartmentForm">
+{{#if show}}
+	<div class="newDepartmentForm">
+		<input type="text" id="hospital"  value={{currentHospital}} placeholder="hospital" /> 
+		<input type="text" id="department"  placeholder="名稱" /> 
+		<input type="text" id="category"  placeholder="category" /> <br>
+		<!--
+		<ul id="departmentKPIsTmp">
+			{{> departmentKPIsTmp}}
+		</ul>
+		-->
+		<button id="save" class="btn btn-info"> 完成 </button>
+	</div>
+{{/if}}
+</template>
+
+<template name="bsckpis">
+{{#if show}}
+	<div class="bsckpis">
+		<h1> 平衡記分卡指標庫 </h1>
+		{{#each kpis}}
+			{{> kpi}}
+		{{/each}}
+	</div>
+{{/if}}
+</template>
+
+<template name="departments">
+{{#if show}}
+	{{#if currentHospital}}
+		<label> {{currentHospital}} </label>
+		<hr>
+		<div class="departments">
+			{{#each departments}}
+				{{indx}} {{category}} {{department}}
+			{{/each}}
+		</div>
+	{{else}}
+		<input type="text" id="currentHospital" placeholder="currentHospital" />
+	{{/if}}
+	
+{{/if}}  
+</template>
