@@ -133,21 +133,31 @@
 		<input type="text" id="hospital"  value={{currentHospital}} placeholder="hospital" /> 
 		<input type="text" id="team"  placeholder="名稱" /> 
 		<input type="text" id="category"  placeholder="category" />
-		<div class="newTeamKPIForm" >
-			Finance <input type="text" id="weightFinance" class="input-mini" placeholder=0 /> <br> 
-			Client <input type="text" id="weightClient" class="input-mini" placeholder=0 /> <br>
-			Intern <input type="text" id="weightIntern" class="input-mini" placeholder=0 /> <br>
-			Study <input type="text" id="weightStudy" class="input-mini" placeholder=0 /> 
-		</div>
+		<div class="selectKPIForm" >
+			{{#each perspectives}}
+				{{perspective}} <input type="text" id="weight{{perspective}}" class="input-mini" placeholder=0 /> <br>
+				<ol>
+				{{#each kpis}}
+					<li>
+						</a> {{category}} {{title}} {{definition}} <input type="text" id="weight{{title}}" class="input-mini" placeholder=0 />
+					</li>
+				{{/each}}
+				</ol>
+			{{/each}}	
+		</div>	
 		<button id="save" class="btn btn-info"> 完成 </button>
 	</div>
 {{/if}}
 </template>
 
+<template name="selectKPIForm">
+	
+</template>
+
 
 <template name= "editTeamForm">
 {{#if show}}
-	<div class="newTeamForm">
+	<div class="editTeamForm">
 		
 		<input type="text" id="hospital" class="disabled" value={{hospital}} /> 
 		<input type="text" id="team"  value={{team}} /> 

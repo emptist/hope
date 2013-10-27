@@ -137,7 +137,7 @@ Template.header.events
 
 #------------------------- bsckpis ---------------------------------------
 Template.bsckpis.show = ->
-	isViewing("bsckpis","perspective") #or isViewing "perspective"
+	isViewing "bsckpis","perspective" # or isViewing "perspective"
 
 Template.bsckpis.showButtons = ->
 	showAsEditMode()
@@ -233,6 +233,13 @@ Template.newTeamForm.show = ->
 
 Template.newTeamForm.currentHospital = ->
 	Session.get "currentHospital"
+
+Template.newTeamForm.perspectives = -> 
+	for perspective in ['财务','客户','学习成长','内部流程']
+		perspective: perspective
+		kpis: share.KPIs.find perspective: perspective
+
+#Template.newTeamForm.kpis = -> share.KPIs.find perspective: this
 
 Template.newTeamForm.events
 	'click #save': (e,t) -> 
