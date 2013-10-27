@@ -31,25 +31,26 @@ clientKPIObj = (e, t) ->
 	depts: getValue "#depts" # for which dept
 
 
-clientTeamObj = (e, t) ->
+clientTeamObj = (o, e, t) ->
 	getValue = (id) ->	t.find(id).value
 	hospital= getValue 'input#hospital'
 	team= getValue 'input#team'
+	
 	obj = { 
 		indx: (hospital + "-" + team) 
 		hospital: getValue "input#hospital"
 		team: getValue "input#team" 
 		category: getValue "input#category"
-		weightFinance: getValue "input#weightFinance"
-		weightClient: getValue "input#weightClient"
-		weightIntern: getValue "input#weightIntern"
-		weightStudy: getValue "input#weightStudy"
+		weightFinance: getValue "input#weight财务"
+		weightClient: getValue "input#weight客户"
+		weightIntern: getValue "input#weight内部流程"
+		weightStudy: getValue "input#weight学习成长"
 		financeKPIs: []
 		clientKPIs: []
 		internKPIs: []
 		studyKPIs: []
 	}
-
+	
 	share.consolelog obj
 
 viewDetail = (viewName, t)-> 
@@ -112,7 +113,6 @@ Template.main.events
 
 
 
-
 #------------------------- Template.header -----------------------------
 Template.header.currentMode = -> 
 	share.consolelog if showAsEditMode() is true then "打印模式" else "編輯模式"
@@ -137,7 +137,7 @@ Template.header.events
 
 #------------------------- bsckpis ---------------------------------------
 Template.bsckpis.show = ->
-	isViewing "bsckpis","perspective" # or isViewing "perspective"
+	isViewing "bsckpis","perspective" ,"newKpiForm"
 
 Template.bsckpis.showButtons = ->
 	showAsEditMode()
@@ -149,7 +149,7 @@ Template.bsckpis.kpis = ->
 		share.consolelog share.KPIs.find {}, sort:{perspective: -1, category: -1, title: -1}
 
 #------------------------- newKpiForm ----------------------------------
-Template.newKpiForm.show = -> isViewing "newKpiForm" 
+Template.newKpiForm.show = -> isViewing "newKpiForm","perspective" 
 
 
 Template.newKpiForm.events
@@ -165,6 +165,8 @@ Template.newKpiForm.events
 Template.kpi.editting = ->
 	Session.get "editting #{@._id}"
 
+Template.kpi.showButtons =->
+	showAsEditMode()
 
 
 #------------------------- editKpiForm -----------------------------------
@@ -182,8 +184,6 @@ Template.editKpiForm.events
 
 
 #------------------------- viewKpiForm ----------------------------------
-Template.viewKpiForm.showButtons =->
-	showAsEditMode()
 
 Template.viewKpiForm.events
 	
@@ -245,7 +245,7 @@ Template.newTeamForm.events
 	'click #save': (e,t) -> 
 		share.consolelog t.find( "input#team").value
 		Meteor.call "team", 
-			share.consolelog clientTeamObj e, t
+			share.consolelog clientTeamObj this, e, t
 			(err, id)->
 				#Session.set "currentView", "hospital"
 				share.consolelog viewDetail "team", t
@@ -293,7 +293,7 @@ Template.editTeamForm.events
 	
 	'click #save': (e,t) -> 
 		Meteor.call "team", 
-			clientTeamObj e,t
+			clientTeamObj this, e, t
 			(err, id) ->
 				share.consolelog "editTeamForm event save #{t.data._id}" # is known that share.._id here is undefined 
 				Session.set "editting #{t.data._id}", false

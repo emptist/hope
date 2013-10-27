@@ -79,6 +79,11 @@
 	{{> editKpiForm}}
 {{else}}
 	{{> viewKpiForm}}
+	{{#if showButtons}}
+		<button id="removeKPI" class="btn btn-danger btn-xs"> 删 </button>
+		<button id="editKpiForm" class="btn btn-info btn-xs"> 編 </button>
+	{{/if}} 
+	
 {{/if}}
 </template>
 
@@ -108,10 +113,7 @@
 <template name="viewKpiForm">
 	<article class="viewKpiForm" >
 		<h4> 
-			{{#if showButtons}}
-			<button id="removeKPI" class="btn btn-danger btn-xs"> 删 </button>
-			<button id="editKpiForm" class="btn btn-info btn-xs"> 編 </button>
-			{{/if}} 
+			
 			<a href="/perspective&{{perspective}}">{{perspective}}</a> {{category}} {{title}}
 		</h4>
 
@@ -139,7 +141,8 @@
 				<ol>
 				{{#each kpis}}
 					<li>
-						</a> {{category}} {{title}} {{definition}} <input type="text" id="weight{{title}}" class="input-mini" placeholder=0 />
+						{{title}} <input type="text" id="weight{{title}}" class="input-mini" placeholder=0 />
+						{{> viewKpiForm}}
 					</li>
 				{{/each}}
 				</ol>
