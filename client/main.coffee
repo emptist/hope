@@ -7,7 +7,9 @@ Meteor.subscribe "currentObjects"
 
 
 
-#------------------------ helpers ------------------------------------ 
+#------------------------ helpers ------------------------------------
+fourPerspectives = ['财务','客户','学习成长','内部流程'] 
+
 showAsEditMode = -> Session.get "showButtons"
 
 logSet = (a, b) ->
@@ -28,21 +30,50 @@ clientKPIObj = (e, t) ->
 	definition: getValue "#definition"
 	type: getValue "#type" # the greater the better vs. the less the better vs. the closer the better
 	mesure: getValue "#mesure" # how to score
-	depts: getValue "#depts" # for which dept
+	teams: getValue "#teams" # for which dept
 
 
 clientTeamObj = (o, e, t) ->
 	getValue = (id) ->	t.find(id).value
 	hospital= getValue 'input#hospital'
-	team= getValue 'input#team'
-	share.consolelog "in clientTeamObj t.perspectives is now #{t.perspectives}"
-	share.consolelog "in clientTeamObj newTeamForm this.perspectives is #{o}"
+	team = getValue 'input#team'
+	#share.consolelog "in clientTeamObj t.perspectives() is now #{t.perspectives()}"
 
 	obj = { 
 		indx: (hospital + "-" + team) 
 		hospital: getValue "input#hospital"
 		team: getValue "input#team" 
 		category: getValue "input#category"
+	}
+	obj.BSCard = ( 
+		# too complicated
+		# to read back:
+		#	for perspective in obj.BSCard
+		#		perspective.perpective
+		#		perspective.weight
+		#		perspective.kpis
+		#
+		for perspective in fourPerspectives
+			data =Session.get perspective
+			p= {}
+			p.perpective = data.perpective
+			p.weight= getValue "input#weight#{perspective}"
+			p.kpis= (
+				for kpi in data.kpis when getValue("input#weight#{kpi.title}") > 0
+					kpi.weight= getValue "input#weight#{kpi.title}"
+					kpi 
+				)
+			p 
+		)
+	###	
+		for perspective in fourPerspectives
+			p = { 
+				perspective: perspective
+				kpis: share.KPIs.find(perspective: perspective).fetch()
+			}
+			Session.set perspective, p  # there must be more effecient way to get these
+			p
+
 		weightFinance: getValue "input#weight财务"
 		weightClient: getValue "input#weight客户"
 		weightIntern: getValue "input#weight内部流程"
@@ -51,8 +82,7 @@ clientTeamObj = (o, e, t) ->
 		clientKPIs: Session.get "clientKPIs" ? []
 		internKPIs: Session.get "internKPIs" ? []
 		studyKPIs: Session.get "studyKPIs" ? []
-	}
-	
+	###
 	share.consolelog obj
 
 viewDetail = (viewName, t)-> 
@@ -156,7 +186,7 @@ Template.newKpiForm.show = -> isViewing "newKpiForm","perspective"
 
 Template.newKpiForm.events
 	'click #save': (e,t) -> 
-		Meteor.call "kpi", #perspective, category, title, definition, type, mesure, depts
+		Meteor.call "kpi", #perspective, category, title, definition, type, mesure, teams
 			clientKPIObj e,t
 			(err, id)->
 				viewDetail "perspective",t
@@ -177,7 +207,7 @@ Template.editKpiForm.show = ->
 
 Template.editKpiForm.events
 	'click #save': (e,t) -> 
-		Meteor.call "kpi", #perspective, category, title, definition, type, mesure, depts
+		Meteor.call "kpi", #perspective, category, title, definition, type, mesure, teams
 			clientKPIObj e,t
 			(err, id) ->
 				share.consolelog "editKpiForm event save #{t.data._id}" # is known that share.._id here is undefined 
@@ -237,9 +267,13 @@ Template.newTeamForm.currentHospital = ->
 	Session.get "currentHospital"
 
 Template.newTeamForm.perspectives = -> 
-	for perspective in ['财务','客户','学习成长','内部流程']
-		perspective: perspective
-		kpis: share.KPIs.find perspective: perspective
+	for perspective in fourPerspectives
+		p = { 
+			perspective: perspective
+			kpis: share.KPIs.find(perspective: perspective).fetch()
+		}
+		Session.set perspective, p  # there must be more effecient way to get these
+		p
 
 Template.newTeamForm.events
 	'keypress input#currentHospital': (e,t)->
@@ -249,7 +283,7 @@ Template.newTeamForm.events
 	'click #save': (e,t) -> 
 		share.consolelog t.find( "input#team").value
 		Meteor.call "team", 
-			share.consolelog clientTeamObj this.perspectives, e, t
+			share.consolelog clientTeamObj this, e, t
 			(err, id)->
 				#Session.set "currentView", "hospital"
 				share.consolelog viewDetail "team", t
@@ -274,7 +308,6 @@ Template.viewTeamForm.showButtons = ->
 	showAsEditMode()
 
 Template.viewTeamForm.events
-	
 	'click #editTeamForm':(e,t) ->
 		share.consolelog "viewTeamForm event editTeamForm #{@._id}"
 		Session.set "editting #{@._id}", true #"editting #{t.data._id}", true

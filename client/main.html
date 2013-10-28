@@ -29,7 +29,7 @@
 	<button id="bsckpis" class="btn btn-primary" "navbar-btn">指標</button>	
 	<button id="newKpiForm" class="btn btn-warning" "navbar-btn">添加指標</button>	
 	<button id="teams" class="btn btn-info" "navebar-btn">Depts</button>
-	<button id="newTeamForm" class="btn btn-warning" "navebar-btn">添加Dept</button>
+	<button id="newTeamForm" class="btn btn-warning" "navebar-btn">添加團隊</button>
 	<button id="printable" class="btn btn-default" "navbar-btn" >{{currentMode}}</button>
 	{{/if}}
 {{/if}}
@@ -46,9 +46,9 @@
 		<input type= "text" id="category"  placeholder="二級維度" />
 		<input type="text" id="title"  placeholder="指標名稱" /> 
 		<input type= "text" id="definition"  placeholder="定義" />
-		<input type= "text" id="type"   placeholder="評分類型" />  
+		<input type= "text" id="type"   placeholder="1大好,2小好,3接近好,4區間內好" />  
 		<input type= "text" id="mesure"   placeholder="評分方法" /> 
-		<input type="text" id="depts"  placeholder="適用部門" />
+		<input type="text" id="teams"  placeholder="適用團隊" />
 		<button id="save" class="btn btn-info"> 完成 </button>
 	</div>
 	</form>
@@ -92,13 +92,13 @@
 {{#if show}}
 	<div class="editKpiForm">
 		<ul>
-			<li>一級維度 <input type= "text" id="perspective" value={{perspective}} placeholder="perspective" /></li>
-			<li>二級維度 <input type= "text" id="category" value={{category}} placeholder="category" /></li>
-			<li>指標名稱 <input type="text" id="title" value={{title}} placeholder="title" /></li> 
-			<li>定義 <input type= "text" id="definition" value={{definition}} placeholder="definition" /></li>
-			<li>評分類型 <input type= "text" id="type" value={{type}}  placeholder="type" /></li>  
-			<li>評分方法 <input type= "text" id="mesure" value={{mesure}}  placeholder="mesure" /></li> 
-			<li>適用部門 <input type="text" id="depts" value={{depts}}  /></li>
+			<li>一級維度 <input type= "text" id="perspective" value={{perspective}} placeholder="財務,客戶,內部流程,學習成長" /></li>
+			<li>二級維度 <input type= "text" id="category" value={{category}} placeholder="小類" /></li>
+			<li>指標名稱 <input type="text" id="title" value={{title}} placeholder="指標名稱" /></li> 
+			<li>定義 <input type= "text" id="definition" value={{definition}} placeholder="定義說明" /></li>
+			<li>評分類型 <input type= "text" id="type" value={{type}}  placeholder="1大好,2小好,3接近好,4區間內好" /></li>  
+			<li>評分方法 <input type= "text" id="mesure" value={{mesure}}  placeholder="自比,他比,直接" /></li> 
+			<li>適用團隊 <input type="text" id="teams" value={{teams}}  placeholder="團隊/部門/科室" /></li>
 			<button id="save" class="btn btn-info"> 完成 </button>
 		</ul>
 	</div>
@@ -119,7 +119,7 @@
 			<li>定義: {{definition}}</li>
 			<li>數據類型: {{type}}</li>  
 			<li>評分方法: {{mesure}}</li>
-			<li>適用科室: {{depts}}</li>
+			<li>適用團隊: {{teams}}</li>
 			<!--<li>createdOn: {{createdOn}}</li> </!-->
 		</ul>
 	</article>
@@ -133,7 +133,7 @@
 		<div class="newTeamForm">
 			<input type="text" id="hospital"  value={{currentHospital}} placeholder="hospital" /> 
 			<input type="text" id="team"  placeholder="名稱" /> 
-			<input type="text" id="category"  placeholder="category" />
+			<input type="text" id="category"  placeholder="科別/組別" />
 			<div class="selectKPIForm" >
 				{{#each perspectives}}
 					{{perspective}} <input type="text" id="weight{{perspective}}" class="input-mini" placeholder=0 /> <br>
@@ -150,7 +150,7 @@
 			<button id="save" class="btn btn-info"> 完成 </button>
 		</div>
 	{{else}}
-		<input type="text" id="currentHospital" placeholder="currentHospital" />
+		<input type="text" id="currentHospital" placeholder="醫院名" />
 	{{/if}}
 {{/if}}
 </template>
@@ -180,10 +180,10 @@
 
 <template name="newTeamKPIForm">
 <div class="newTeamKPIForm">
-	Finance <input type="text" id="weightFinance" class="input-mini" placeholder="weight" /> <br> 
-	Client <input type="text" id="weightClient" class="input-mini" placeholder="weight" /> <br>
-	Intern <input type="text" id="weightIntern" class="input-mini" placeholder="weight" /> <br>
-	Study <input type="text" id="weightStudy" class="input-mini" placeholder="weight" /> 
+	Finance <input type="text" id="weightFinance" class="input-mini" placeholder="權重" /> <br> 
+	Client <input type="text" id="weightClient" class="input-mini" placeholder="權重" /> <br>
+	Intern <input type="text" id="weightIntern" class="input-mini" placeholder="權重" /> <br>
+	Study <input type="text" id="weightStudy" class="input-mini" placeholder="權重" /> 
 </div>
 </template> 
 
@@ -216,7 +216,7 @@
 			</ul>
 		</div>
 	{{else}}
-		<input type="text" id="currentHospital" placeholder="currentHospital" />
+		<input type="text" id="currentHospital" placeholder="醫院名" />
 	{{/if}}
 {{/if}}  
 </template>
