@@ -35,7 +35,9 @@ clientTeamObj = (o, e, t) ->
 	getValue = (id) ->	t.find(id).value
 	hospital= getValue 'input#hospital'
 	team= getValue 'input#team'
-	
+	share.consolelog "in clientTeamObj t.perspectives is now #{t.perspectives}"
+	share.consolelog "in clientTeamObj newTeamForm this.perspectives is #{o}"
+
 	obj = { 
 		indx: (hospital + "-" + team) 
 		hospital: getValue "input#hospital"
@@ -45,10 +47,10 @@ clientTeamObj = (o, e, t) ->
 		weightClient: getValue "input#weight客户"
 		weightIntern: getValue "input#weight内部流程"
 		weightStudy: getValue "input#weight学习成长"
-		financeKPIs: []
-		clientKPIs: []
-		internKPIs: []
-		studyKPIs: []
+		financeKPIs: Session.get "financeKPIs" ? []
+		clientKPIs: Session.get "clientKPIs" ? []
+		internKPIs: Session.get "internKPIs" ? []
+		studyKPIs: Session.get "studyKPIs" ? []
 	}
 	
 	share.consolelog obj
@@ -239,13 +241,15 @@ Template.newTeamForm.perspectives = ->
 		perspective: perspective
 		kpis: share.KPIs.find perspective: perspective
 
-#Template.newTeamForm.kpis = -> share.KPIs.find perspective: this
-
 Template.newTeamForm.events
+	'keypress input#currentHospital': (e,t)->
+		if e.keyCode is 13
+			share.consolelog setHospital e.target.value
+
 	'click #save': (e,t) -> 
 		share.consolelog t.find( "input#team").value
 		Meteor.call "team", 
-			share.consolelog clientTeamObj this, e, t
+			share.consolelog clientTeamObj this.perspectives, e, t
 			(err, id)->
 				#Session.set "currentView", "hospital"
 				share.consolelog viewDetail "team", t

@@ -1,5 +1,4 @@
 <template name="main">
-
 <header class="navbar" >
 	<div class="navbar-inner">
   		{{> header}}
@@ -15,7 +14,6 @@
 	  {{> teams}}
   {{/if}}
 </div>
-
 </template>
 
 
@@ -131,25 +129,29 @@
 
 <template name="newTeamForm">
 {{#if show}}
-	<div class="newTeamForm">
-		<input type="text" id="hospital"  value={{currentHospital}} placeholder="hospital" /> 
-		<input type="text" id="team"  placeholder="名稱" /> 
-		<input type="text" id="category"  placeholder="category" />
-		<div class="selectKPIForm" >
-			{{#each perspectives}}
-				{{perspective}} <input type="text" id="weight{{perspective}}" class="input-mini" placeholder=0 /> <br>
-				<ol>
-				{{#each kpis}}
-					<li>
-						{{title}} <input type="text" id="weight{{title}}" class="input-mini" placeholder=0 />
-						{{> viewKpiForm}}
-					</li>
-				{{/each}}
-				</ol>
-			{{/each}}	
-		</div>	
-		<button id="save" class="btn btn-info"> 完成 </button>
-	</div>
+	{{#if currentHospital}}
+		<div class="newTeamForm">
+			<input type="text" id="hospital"  value={{currentHospital}} placeholder="hospital" /> 
+			<input type="text" id="team"  placeholder="名稱" /> 
+			<input type="text" id="category"  placeholder="category" />
+			<div class="selectKPIForm" >
+				{{#each perspectives}}
+					{{perspective}} <input type="text" id="weight{{perspective}}" class="input-mini" placeholder=0 /> <br>
+					<ol>
+					{{#each kpis}}
+						<li>
+							{{title}} <input type="text" id="weight{{title}}" class="input-mini" placeholder=0 />
+							{{> viewKpiForm}}
+						</li>
+					{{/each}}
+					</ol>
+				{{/each}}	
+			</div>	
+			<button id="save" class="btn btn-info"> 完成 </button>
+		</div>
+	{{else}}
+		<input type="text" id="currentHospital" placeholder="currentHospital" />
+	{{/if}}
 {{/if}}
 </template>
 
