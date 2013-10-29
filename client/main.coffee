@@ -31,6 +31,7 @@ clientKPIObj = (e, t) ->
 	type: getValue "#type" # the greater the better vs. the less the better vs. the closer the better
 	mesure: getValue "#mesure" # how to score
 	teams: getValue "#teams" # for which dept
+	weight: 0
 
 
 clientTeamObj = (o, e, t) ->
@@ -45,7 +46,7 @@ clientTeamObj = (o, e, t) ->
 		team: getValue "input#team" 
 		category: getValue "input#category"
 	}
-	obj.BSCard = ( 
+	obj.perspectives = ( 
 		# too complicated
 		# to read back:
 		#	for perspective in obj.BSCard
@@ -54,9 +55,9 @@ clientTeamObj = (o, e, t) ->
 		#		perspective.kpis
 		#
 		for perspective in fourPerspectives
-			data =Session.get perspective
+			data = Session.get perspective
 			p= {}
-			p.perpective = data.perpective
+			p.perspective = data.perspective
 			p.weight= getValue "input#weight#{perspective}"
 			p.kpis= (
 				for kpi in data.kpis when getValue("input#weight#{kpi.title}") > 0
@@ -293,35 +294,32 @@ Template.newTeamForm.events
 			share.consolelog setHospital e.target.value
 
 
-#------------------------- team ------------------------------------
-Template.team.editting = ->
-	share.consolelog Session.get "editting #{@._id}" #these should be combined to one
-
-Template.team.show = ->
-	true
-
-
-
-
-#--------------------------- viewTeamForm -------------------------------
-Template.viewTeamForm.showButtons = ->
-	showAsEditMode()
-
-Template.viewTeamForm.events
-	'click #editTeamForm':(e,t) ->
-		share.consolelog "viewTeamForm event editTeamForm #{@._id}"
-		Session.set "editting #{@._id}", true #"editting #{t.data._id}", true
-	
-	'click #removeTeam':	(e,t) ->
-		share.consolelog "viewTeamForm event removeTeam #{@._id}"
-		Meteor.call "removeTeam", @._id
-
 
 
 #-------------------------- editTeamForm -----------------------------
 Template.editTeamForm.show = ->
-	isViewing "team", "teams"
+	isViewing "teams"#,"team",
+###
+Template.newTeamForm.perspectives = ->
+	getPerspective = (perspective, perspectives)->
+		p for p in perspectives when p.perspective is perspective
 
+	getKPI = (kpi, kpis) ->
+		k for k in kpis when k.title is kpi.title
+
+	for perspective in fourPerspectives
+		p = { 
+			perspective: perspective
+			weight: getPerspective(perspective, this.perspectives).weight 
+			kpis: share.KPIs.find(perspective: perspective).fetch()
+		}
+
+		for kpi in p.kpis 
+			kpi.weight = getKPI(kpi, this.kpis).weight #find out the specific perspective weight
+
+		Session.set perspective, p  # there must be more effecient way to get these
+		p
+###
 
 Template.editTeamForm.events
 	'keypress input#hospital': (e,t)->
@@ -340,6 +338,41 @@ Template.editTeamForm.events
 	'click #editTeamKPIForm': (e,t) ->
 		Session.set "editTeamKPIForm #{t.data._id}", true	
 ###
+
+
+
+
+
+
+#------------------------- team ------------------------------------
+Template.team.editting = ->
+	share.consolelog Session.get "editting #{@._id}" #these should be combined to one
+
+Template.team.show = ->
+	true
+
+
+
+
+#--------------------------- viewTeamForm -------------------------------
+Template.viewTeamForm.showButtons = ->
+	showAsEditMode()
+
+#Template.viewTeamForm.perspectives = ->
+#	this.bscs.perspectives 
+
+Template.viewTeamForm.events
+	'click #editTeamForm':(e,t) ->
+		share.consolelog "viewTeamForm event editTeamForm #{@._id}"
+		Session.set "editting #{@._id}", true #"editting #{t.data._id}", true
+	
+	'click #removeTeam':	(e,t) ->
+		share.consolelog "viewTeamForm event removeTeam #{@._id}"
+		Meteor.call "removeTeam", @._id
+
+
+
+
 
 ###------------------------- editTeamKPIForm ---------------------------------
 Template.editTeamKPIForm.show = ->
