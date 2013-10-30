@@ -35,7 +35,7 @@ clientKPIObj = (e, t) ->
 
 
 clientTeamObj = (o, e, t) ->
-	getValue = (id) ->	t.find(id).value
+	getValue = (id) ->	t.find(id)?.value
 	hospital= getValue 'input#hospital'
 	team = getValue 'input#team'
 	#share.consolelog "in clientTeamObj t.perspectives() is now #{t.perspectives()}"
@@ -94,8 +94,8 @@ viewDetail = (viewName, t)->
 #setHospital = (hospital)-> Meteor.call "share.SetHospital", hospital
 
 
-getHospital = -> Session.get "currentHospital"
-setHospital = (hospital)-> Session.set "currentHospital", hospital
+getHospital = -> Session.get "hospital"
+setHospital = (hospital)-> Session.set "hospital", hospital
 
 #------------------------ router ------------------------------------
 logSetCurrentView = (currentView)->
@@ -234,7 +234,7 @@ Template.viewKpiForm.events
 
 #------------------------- teams ----------------------------------- 
 Template.teams.show = ->
-	isViewing "teams", "team"  
+	isViewing "teams", "team", "category"  
 	
 Template.teams.showButtons = -> # 打印模式不显示按钮
 	showAsEditMode()
@@ -244,15 +244,17 @@ Template.teams.teams = ->  # class 三级分级 type 公立等 title 医院名
 	if isViewing "teams" 
 		share.consolelog share.Teams.find hospital: getHospital() #, 
 			#sort: { category: -1, team: -1}
+	else if isViewing "category"
+		share.Teams.find {hospital: getHospital(), category: Session.get 'currentDetail'}
 	else if isViewing("team") 
 		share.Teams.find indx: "#{getHospital()}-#{Session.get 'currentDetail'}"
 
 
-Template.teams.currentHospital = ->
+Template.teams.hospital = ->
 	getHospital()
 
 Template.teams.events
-	'keypress input#currentHospital': (e,t)->
+	'keypress input#hospital': (e,t)->
 		if e.keyCode is 13
 			share.consolelog setHospital e.target.value
 
@@ -264,8 +266,8 @@ Template.teams.events
 Template.newTeamForm.show = ->
 	isViewing "newTeamForm" #,"teams" 
 
-Template.newTeamForm.currentHospital = ->
-	Session.get "currentHospital"
+Template.newTeamForm.hospital = ->
+	Session.get "hospital"
 
 Template.newTeamForm.perspectives = -> 
 	for perspective in fourPerspectives
@@ -277,7 +279,7 @@ Template.newTeamForm.perspectives = ->
 		p
 
 Template.newTeamForm.events
-	'keypress input#currentHospital': (e,t)->
+	'keypress input#hospital': (e,t)->
 		if e.keyCode is 13
 			share.consolelog setHospital e.target.value
 
@@ -298,14 +300,14 @@ Template.newTeamForm.events
 
 #-------------------------- editTeamForm -----------------------------
 Template.editTeamForm.show = ->
-	isViewing "teams"#,"team",
-###
-Template.newTeamForm.perspectives = ->
+	isViewing "teams","team",
+
+Template.editTeamForm.perspectives = ->
 	getPerspective = (perspective, perspectives)->
 		p for p in perspectives when p.perspective is perspective
 
 	getKPI = (kpi, kpis) ->
-		k for k in kpis when k.title is kpi.title
+		k for k in kpis? when k.title is kpi.title
 
 	for perspective in fourPerspectives
 		p = { 
@@ -315,11 +317,11 @@ Template.newTeamForm.perspectives = ->
 		}
 
 		for kpi in p.kpis 
-			kpi.weight = getKPI(kpi, this.kpis).weight #find out the specific perspective weight
+			kpi.weight = getKPI(kpi, this.kpis)?.weight or 0 #find out the specific perspective weight
 
 		Session.set perspective, p  # there must be more effecient way to get these
 		p
-###
+
 
 Template.editTeamForm.events
 	'keypress input#hospital': (e,t)->
@@ -358,6 +360,9 @@ Template.team.show = ->
 Template.viewTeamForm.showButtons = ->
 	showAsEditMode()
 
+Template.viewTeamForm.showKpiForm = ->
+	showAsEditMode()
+
 #Template.viewTeamForm.perspectives = ->
 #	this.bscs.perspectives 
 
@@ -370,6 +375,7 @@ Template.viewTeamForm.events
 		share.consolelog "viewTeamForm event removeTeam #{@._id}"
 		Meteor.call "removeTeam", @._id
 
+	#'click .kpi': Session.set "isViewing #{@._id}"
 
 
 

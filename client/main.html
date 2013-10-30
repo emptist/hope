@@ -129,10 +129,10 @@
 
 <template name="newTeamForm">
 {{#if show}}
-	{{#if currentHospital}}
+	{{#if hospital}}
 		<div class="newTeamForm">
 			<div class="basics">
-				<input type="text" id="hospital"  value={{currentHospital}} placeholder="hospital" /> 
+				<input type="text" id="hospital"  value={{hospital}} placeholder="hospital" /> 
 				<input type="text" id="team"  placeholder="名稱" /> 
 				<input type="text" id="category"  placeholder="科別/組別" />	
 			</div>
@@ -152,7 +152,7 @@
 			<button id="save" class="btn btn-info"> 完成 </button>
 		</div>
 	{{else}}
-		<input type="text" id="currentHospital" placeholder="醫院名" />
+		<input type="text" id="hospital" placeholder="醫院名" />
 	{{/if}}
 {{/if}}
 </template>
@@ -172,15 +172,15 @@
 		</div>
 		<div class="selectKPIForm" >
 			{{#each perspectives}}
-				{{perspective}} <input type="text" id="weight{{perspective}}" class="input-mini" value="{{weight}}" /> <br>
-				<ol>
+				<h4><input type="text" id="weight{{perspective}}" class="input-mini" value="{{weight}}" /> {{perspective}} </h4>
+				<ul>
 				{{#each kpis}}
 					<li>
-						{{title}} <input type="text" id="weight{{title}}" class="input-mini" value="{{weight}}" />
+						<input type="text" id="weight{{title}}" class="input-mini" value="{{weight}}" />{{title}} 
 						{{> viewKpiForm}}
 					</li>
 				{{/each}}
-				</ol>
+				</ul>
 			{{/each}}	
 		</div>	
 		<button id="save" class="btn btn-info"> 完成 </button>
@@ -215,9 +215,9 @@
 
 <template name="teams">
 {{#if show}}
-	{{#if currentHospital}}
+	{{#if hospital}}
 		<div class="hospital">
-			<h3> {{currentHospital}} </h3>
+			<h3> {{hospital}} </h3>
 			<hr>
 		</div>
 		<div class="teams">
@@ -229,7 +229,7 @@
 			</ul>
 		</div>
 	{{else}}
-		<input type="text" id="currentHospital" placeholder="醫院名" />
+		<input type="text" id="hospital" placeholder="醫院名" />
 	{{/if}}
 {{/if}}  
 </template>
@@ -256,17 +256,19 @@
 			<button id="removeTeam" class="btn btn-danger btn-xs"> 删 </button>
 			<button id="editTeamForm" class="btn btn-info btn-xs"> 編 </button>
 		{{/if}} 
- 		<a href="/team&{{team}}">{{team}}</a> {{category}}
+ 		{{team}} <a href="/category&{{category}}">{{category}}</a> 
 	 </h4>
 		 <div class="viewTeamForm">
 			<div class="teamKPIForm" >
 				{{#each perspectives}}
-					{{weight}} {{perspective}}  <br>
+					<h4>{{weight}} {{perspective}}</h4>
 					<ul>
 					{{#each kpis}}
 						<li>
 							{{weight}} {{title}} 
+							{{#if showKpiForm}}  
 							{{> viewKpiForm}}
+							{{/if}}
 						</li>
 					{{/each}}
 					</ul>
