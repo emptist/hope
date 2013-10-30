@@ -217,6 +217,8 @@ Template.editKpiForm.events
 
 
 #------------------------- viewKpiForm ----------------------------------
+Template.viewKpiForm.showButtons = ->
+	isViewing("bsckpis", "perspective") and showAsEditMode()
 
 Template.viewKpiForm.events
 	
@@ -302,26 +304,32 @@ Template.newTeamForm.events
 Template.editTeamForm.show = ->
 	isViewing "teams","team",
 
-Template.editTeamForm.perspectives = ->
+Template.editTeamForm.moreperspectives = ->
+	#@.perspectives
 	getPerspective = (perspective, perspectives)->
-		p for p in perspectives when p.perspective is perspective
+		(p for p in perspectives when p.perspective is perspective)[0] 
 
-	getKPI = (kpi, kpis) ->
-		k for k in kpis? when k.title is kpi.title
+	#getPWeight = (perspective, perspectives)->
+	#	getPerpective(perspective, perspectives).weight
+
+	getKPIWeight = (kpi, thiskpis) ->
+		(k.weight for k in thiskpis when k.title is kpi.title)[0] ? 0
 
 	for perspective in fourPerspectives
+		thisPps = getPerspective(perspective, @.perspectives)
+		thisKpis = thisPps.kpis
 		p = { 
 			perspective: perspective
-			weight: getPerspective(perspective, this.perspectives).weight 
+			weight: thisPps.weight
 			kpis: share.KPIs.find(perspective: perspective).fetch()
 		}
 
 		for kpi in p.kpis 
-			kpi.weight = getKPI(kpi, this.kpis)?.weight or 0 #find out the specific perspective weight
+			kpi.weight = getKPIWeight(kpi, thisKpis) #find out the specific perspective weight
 
 		Session.set perspective, p  # there must be more effecient way to get these
 		p
-
+	
 
 Template.editTeamForm.events
 	'keypress input#hospital': (e,t)->

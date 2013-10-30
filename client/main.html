@@ -78,11 +78,6 @@
 	{{> editKpiForm}}
 {{else}}
 	{{> viewKpiForm}}
-	{{#if showButtons}}
-		<button id="removeKPI" class="btn btn-danger btn-xs"> 删 </button>
-		<button id="editKpiForm" class="btn btn-info btn-xs"> 編 </button>
-	{{/if}} 
-	
 {{/if}}
 </template>
 
@@ -113,7 +108,13 @@
 	<article class="viewKpiForm" >
 		<ul class="inline" >
 			<!--<a href="/perspective&{{perspective}}">-->
-			<li>{{perspective}}</li> 
+			<li>
+				{{#if showButtons}}
+					<button id="removeKPI" class="btn btn-danger btn-xs"> 删 </button>
+					<button id="editKpiForm" class="btn btn-info btn-xs"> 編 </button>
+				{{/if}} 
+				{{perspective}}
+			</li> 
 			<li>{{category}}</li>
 			<li><strong>{{title}}</strong></li>
 			<li>定義: {{definition}}</li>
@@ -138,15 +139,15 @@
 			</div>
 			<div class="selectKPIForm" >
 				{{#each perspectives}}
-					{{perspective}} <input type="text" id="weight{{perspective}}" class="input-mini" placeholder=0 /> <br>
-					<ol>
+					<input type="text" id="weight{{perspective}}" class="input-mini" placeholder=0 /> {{perspective}}  <br>
+					<ul>
 					{{#each kpis}}
 						<li>
-							{{title}} <input type="text" id="weight{{title}}" class="input-mini" placeholder=0 />
+							<input type="text" id="weight{{title}}" class="input-mini" placeholder=0 /> {{title}}
 							{{> viewKpiForm}}
 						</li>
 					{{/each}}
-					</ol>
+					</ul>
 				{{/each}}	
 			</div>	
 			<button id="save" class="btn btn-info"> 完成 </button>
@@ -171,7 +172,7 @@
 			<input type="text" id="category"  value="{{category}}" />	
 		</div>
 		<div class="selectKPIForm" >
-			{{#each perspectives}}
+			{{#each moreperspectives}}
 				<h4><input type="text" id="weight{{perspective}}" class="input-mini" value="{{weight}}" /> {{perspective}} </h4>
 				<ul>
 				{{#each kpis}}
