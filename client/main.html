@@ -114,6 +114,23 @@
 					<button id="removeKPI" class="btn btn-danger btn-xs"> 删 </button>
 					<button id="editKpiForm" class="btn btn-info btn-xs"> 編 </button>
 				{{/if}} 
+				{{perspective}} {{category}}
+			</li> 
+			<li><strong>{{title}}</strong></li>
+			<li>定義: {{definition}}</li>
+			<li>數據類型: {{type}}</li>  
+			<li>評分方法: {{mesure}}</li>
+			<li>適用團隊: {{teams}}</li>
+			<!--<li>createdOn: {{createdOn}}</li> </!-->
+		</ul>
+	</article>
+</template>
+
+<template name="viewKpiFormInline">
+	<article class="viewKpiFormInline" >
+		<ul class="inline" >
+			<!--<a href="/perspective&{{perspective}}">-->
+			<li>
 				{{perspective}}
 			</li> 
 			<li>{{category}}</li>
@@ -126,7 +143,6 @@
 		</ul>
 	</article>
 </template>
-
 
 
 <template name="newTeamForm">
@@ -145,7 +161,7 @@
 					{{#each kpis}}
 						<li>
 							<input type="text" id="weight{{title}}" class="input-mini" placeholder=0 /> {{title}}
-							{{> viewKpiForm}}
+							{{> viewKpiFormInline}}
 						</li>
 					{{/each}}
 					</ul>
@@ -179,7 +195,7 @@
 				{{#each kpis}}
 					<li>
 						<input type="text" id="weight{{title}}" class="input-mini" value="{{weight}}" />{{title}} 
-						{{> viewKpiForm}}
+						{{> viewKpiFormInline}}
 					</li>
 				{{/each}}
 				</ul>
@@ -269,7 +285,7 @@
 						<li>
 							{{weight}} {{title}} 
 							{{#if showKpiForm}}  
-							{{> viewKpiForm}}
+							{{> viewKpiFormInline}}
 							{{/if}}
 						</li>
 					{{/each}}
