@@ -49,6 +49,8 @@
 		<input type= "text" id="type"   placeholder="1大好,2小好,3接近好,4區間內好" />  
 		<input type= "text" id="mesure"   placeholder="評分方法" /> 
 		<input type="text" id="teams"  placeholder="適用團隊" />
+		<input type="text" id="remarker"  placeholder="評分者" />
+		<input type="text" id="kpiSource"  placeholder="指標來源" />
 		<button id="save" class="btn btn-info"> 完成 </button>
 	</div>
 	</form>
@@ -95,6 +97,8 @@
 			<li>評分類型 <input type= "text" id="type" value={{type}}  placeholder="1大好,2小好,3接近好,4區間內好" /></li>  
 			<li>評分方法 <input type= "text" id="mesure" value={{mesure}}  placeholder="自比,他比,直接" /></li> 
 			<li>適用團隊 <input type="text" id="teams" value={{teams}}  placeholder="團隊/部門/科室" /></li>
+			<li>評分者 <input type="text" id="remarker" value={{remarker}}  placeholder="評分者" /></li>
+			<li>指標來源 <input type="text" id="kpiSource" value={{kpiSource}}  placeholder="評分者" /></li>
 			<button id="save" class="btn btn-info"> 完成 </button>
 		</ul>
 	</div>
@@ -121,6 +125,8 @@
 			<li>數據類型: {{type}}</li>  
 			<li>評分方法: {{mesure}}</li>
 			<li>適用團隊: {{teams}}</li>
+			<li>評分者: {{remarker}}</li>
+			<li>指標來源: {{kpiSource}}</li>
 			<!--<li>createdOn: {{createdOn}}</li> </!-->
 		</ul>
 	</article>
@@ -139,6 +145,8 @@
 			<li>數據類型: {{type}}</li>  
 			<li>評分方法: {{mesure}}</li>
 			<li>適用團隊: {{teams}}</li>
+			<li>評分者: {{remarker}}</li>
+			<li>指標來源: {{kpiSource}}</li>
 			<!--<li>createdOn: {{createdOn}}</li> </!-->
 		</ul>
 	</article>

@@ -31,6 +31,8 @@ clientKPIObj = (e, t) ->
 	type: getValue "#type" # the greater the better vs. the less the better vs. the closer the better
 	mesure: getValue "#mesure" # how to score
 	teams: getValue "#teams" # for which dept
+	remarker: getValue "#remarker" 
+	kpiSource: getValue "#kpiSource"
 	weight: 0
 
 
@@ -187,7 +189,7 @@ Template.newKpiForm.show = -> isViewing "newKpiForm","perspective"
 
 Template.newKpiForm.events
 	'click #save': (e,t) -> 
-		Meteor.call "kpi", #perspective, category, title, definition, type, mesure, teams
+		Meteor.call "kpi", 
 			clientKPIObj e,t
 			(err, id)->
 				viewDetail "perspective",t
@@ -208,7 +210,7 @@ Template.editKpiForm.show = ->
 
 Template.editKpiForm.events
 	'click #save': (e,t) -> 
-		Meteor.call "kpi", #perspective, category, title, definition, type, mesure, teams
+		Meteor.call "kpi", 
 			clientKPIObj e,t
 			(err, id) ->
 				share.consolelog "editKpiForm event save #{t.data._id}" # is known that share.._id here is undefined 
