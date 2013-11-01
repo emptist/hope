@@ -1,6 +1,18 @@
 #-------------------- subscriptions --------------------------------
+# the following doesn't work for unkown reason
+#getHospital = -> Meteor.call "share.GetHospital"
+#setHospital = (hospital)-> Meteor.call "share.SetHospital", hospital
+
+
+getHospital = -> 
+	Session.get "hospital"
+
+setHospital = (hospital)-> 
+	Session.set "hospital", hospital
+
+#Meteor.subscribe "teamsChannel", getHospital() 
+Meteor.subscribe "teamsChannel" 
 Meteor.subscribe "bsckpisChannel"
-Meteor.subscribe "teamsChannel"
 Meteor.subscribe "hospitalsChannel"
 Meteor.subscribe "currentObjects"
 
@@ -91,13 +103,6 @@ clientTeamObj = (o, e, t) ->
 viewDetail = (viewName, t)-> 
 	Backbone.history.navigate '/' + viewName + '&' +  t.find('#' + viewName).value, true #decodeURI 
 
-# the following doesn't work for unkown reason
-#getHospital = -> Meteor.call "share.GetHospital"
-#setHospital = (hospital)-> Meteor.call "share.SetHospital", hospital
-
-
-getHospital = -> Session.get "hospital"
-setHospital = (hospital)-> Session.set "hospital", hospital
 
 #------------------------ router ------------------------------------
 logSetCurrentView = (currentView)->

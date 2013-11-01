@@ -136,11 +136,9 @@
 	<article class="viewKpiFormInline" >
 		<ul class="inline" >
 			<!--<a href="/perspective&{{perspective}}">-->
-			<li>
-				{{perspective}}
-			</li> 
-			<li>{{category}}</li>
-			<li><strong>{{title}}</strong></li>
+			<!--<li>{{perspective}}</li>-->
+			<!--<li>{{category}}</li>-->
+			<!--<li><strong>{{title}}</strong></li>-->
 			<li>定義: {{definition}}</li>
 			<li>數據類型: {{type}}</li>  
 			<li>評分方法: {{mesure}}</li>
@@ -158,13 +156,13 @@
 	{{#if hospital}}
 		<div class="newTeamForm">
 			<div class="basics">
-				<input type="text" id="hospital"  value={{hospital}} placeholder="hospital" /> 
-				<input type="text" id="team"  placeholder="名稱" /> 
-				<input type="text" id="category"  placeholder="科別/組別" />	
+				<input type="text" id="hospital" value={{hospital}} placeholder="hospital" /> 
+				<input type="text" id="team" placeholder="名稱" /> 
+				<input type="text" id="category" placeholder="科別/組別" />	
 			</div>
 			<div class="selectKPIForm" >
 				{{#each perspectives}}
-					<input type="text" id="weight{{perspective}}" class="input-mini" placeholder=0 /> {{perspective}}  <br>
+					<h4> <input type="text" id="weight{{perspective}}" class="input-mini" placeholder=0 /> {{perspective}} </h4> <br>
 					<ul>
 					{{#each kpis}}
 						<li>
@@ -173,6 +171,7 @@
 						</li>
 					{{/each}}
 					</ul>
+					<hr>
 				{{/each}}	
 			</div>	
 			<button id="save" class="btn btn-info"> 完成 </button>

@@ -1,7 +1,14 @@
 Meteor.publish "bsckpisChannel" , -> 
 	share.KPIs.find()
 
-Meteor.publish "teamsChannel" , -> 
+
+###
+Meteor.publish "teamsChannel" , (hospital)-> 
+	share.Teams.find hospital: hospital
+###
+
+
+Meteor.publish "teamsChannel" , ()-> 
 	share.Teams.find()
 
 Meteor.publish "hospitalsChannel" , -> 
