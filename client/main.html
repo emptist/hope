@@ -9,9 +9,10 @@
   {{#if adminLoggedIn}}
   	  {{> newKpiForm}}
 	  {{> newTeamForm}}
-	  
+	  {{> newTaskForm}}
 	  {{> bsckpis}}
 	  {{> teams}}
+	  {{> tasks}}
   {{/if}}
 </div>
 </template>
@@ -23,13 +24,15 @@
 		<li>{{loginButtons}}</li>
 	</ul>
 <a class="brand" href="/"> HOPE </a>
-<h1><a href='/'> 醫院績效管理 </a></h1>
+<h1> 醫院績效管理 </h1>
 {{#if adminLoggedIn}}
 	{{#if showButtons}}
 	<button id="bsckpis" class="btn btn-primary" "navbar-btn">指標</button>	
 	<button id="newKpiForm" class="btn btn-warning" "navbar-btn">添加指標</button>	
-	<button id="teams" class="btn btn-info" "navebar-btn">Depts</button>
+	<button id="teams" class="btn btn-info" "navebar-btn">科組</button>
 	<button id="newTeamForm" class="btn btn-warning" "navebar-btn">添加團隊</button>
+	<button id="tasks" class="btn btn-info" "navebar-btn">Tasks</button>
+	<button id="newTaskForm" class="btn btn-warning" "navebar-btn">添加Task</button>
 	<button id="printable" class="btn btn-default" "navbar-btn" >{{currentMode}}</button>
 	{{/if}}
 {{/if}}
@@ -64,7 +67,8 @@
 <template name="bsckpis">
 {{#if show}}
 	<div class="bsckpis">
-		<h1> 平衡記分卡指標庫 </h1>
+		<h3> 平衡記分卡指標庫 </h3>
+		<hr>
 		{{#each kpis}}
 			{{> kpi}}
 		{{/each}}
@@ -111,16 +115,14 @@
 <template name="viewKpiForm">
 	<article class="viewKpiForm" >
 		<!--<ul class="inline" >-->
-		<ul>
 			<!--<a href="/perspective&{{perspective}}">-->
-			<li>
 				{{#if showButtons}}
 					<button id="removeKPI" class="btn btn-danger btn-xs"> 删 </button>
 					<button id="editKpiForm" class="btn btn-info btn-xs"> 編 </button>
 				{{/if}} 
-				{{perspective}} {{category}}
-			</li> 
-			<li><strong>{{title}}</strong></li>
+				<a href="/perspective&{{perspective}}">{{perspective}}</a> {{category}} <br>
+			<strong>{{title}}</strong>
+		<ul>
 			<li>定義: {{definition}}</li>
 			<li>數據類型: {{type}}</li>  
 			<li>評分方法: {{mesure}}</li>
@@ -158,9 +160,10 @@
 			<div class="basics">
 				<input type="text" id="hospital" value={{hospital}} placeholder="hospital" /> 
 				<input type="text" id="team" placeholder="名稱" /> 
-				<input type="text" id="category" placeholder="科別/組別" />	
+				<input type="text" id="category" placeholder="科別/組別" />
+				<!--<button id="kpis" class="btn btn-info">指標</button>	-->
 			</div>
-			<div class="selectKPIForm" >
+			<div class="selectKpiForm" >
 				{{#each perspectives}}
 					<h4> <input type="text" id="weight{{perspective}}" class="input-mini" placeholder=0 /> {{perspective}} </h4> <br>
 					<ul>
@@ -172,7 +175,7 @@
 					{{/each}}
 					</ul>
 					<hr>
-				{{/each}}	
+				{{/each}}
 			</div>	
 			<button id="save" class="btn btn-info"> 完成 </button>
 		</div>

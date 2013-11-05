@@ -11,6 +11,11 @@ Meteor.publish "teamsChannel" , (hospital)->
 Meteor.publish "teamsChannel" , ()-> 
 	share.Teams.find()
 
+
+Meteor.publish "tasksChannel" , ()-> 
+	share.Tasks.find()
+
+
 Meteor.publish "hospitalsChannel" , -> 
 	share.Hospitals.find()
 
@@ -39,11 +44,14 @@ insertInto = (collection, obj)->
 
 Meteor.methods
 	removeKPI: (id)-> removeFrom share.KPIs, id 
-	removeTeam: (id)-> removeFrom	share.Teams, id
+	removeTeam: (id)-> removeFrom share.Teams, id
+	removeTask: (id)-> removeFrom share.Tasks, id
 	#removeHospital: (id)-> removeFrom share.Hospitals, id 
 	
 	kpi: (obj)-> upsertTo share.KPIs, obj
 	team: (obj)-> upsertTo share.Teams, obj
+	task: (obj)-> upsertTo share.Tasks, obj
+
 	#hospital: (obj)-> upsertTo share.Hospitals, obj
 		
 			
