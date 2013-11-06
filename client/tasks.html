@@ -1,0 +1,23 @@
+<template name="newTaskForm">
+	{{#if show}}
+	<input type="text" id="text" />
+	{{/if}}
+</template>
+
+
+
+<template name="tasks">
+{{#if show}}
+  <ul class = "list-unstyled">
+  	{{#each items}}
+  		{{> item}}
+		{{/each}}
+  </ul>
+{{/if}}
+</template>
+
+
+
+<template name="item">
+	<li>{{this.text}}</li>
+</template>
