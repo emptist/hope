@@ -94,15 +94,15 @@
 {{#if show}}
 	<div class="editKpiForm">
 		<ul>
-			<li>一級維度 <input type= "text" id="perspective" value={{perspective}} placeholder="財務,客戶,內部流程,學習成長" /></li>
-			<li>二級維度 <input type= "text" id="category" value={{category}} placeholder="小類" /></li>
-			<li>指標名稱 <input type="text" id="title" value={{title}} placeholder="指標名稱" /></li> 
-			<li>定義 <input type= "text" id="definition" value={{definition}} placeholder="定義說明" /></li>
-			<li>評分類型 <input type= "text" id="type" value={{type}}  placeholder="1大好,2小好,3接近好,4區間內好" /></li>  
-			<li>評分方法 <input type= "text" id="mesure" value={{mesure}}  placeholder="自比,他比,直接" /></li> 
-			<li>適用團隊 <input type="text" id="teams" value={{teams}}  placeholder="團隊/部門/科室" /></li>
-			<li>評分者 <input type="text" id="remarker" value={{remarker}}  placeholder="評分者" /></li>
-			<li>指標來源 <input type="text" id="kpiSource" value={{kpiSource}}  placeholder="評分者" /></li>
+			<li>一級維度 <input type= "text" id="perspective" value= {{perspective}}></li>
+			<li>二級維度 <input type= "text" id="category" value= {{category}}></li>
+			<li>指標名稱 <input type="text" id="title" value= {{title}}></li> 
+			<li>定義 <input type= "text" id="definition" value= {{definition}}></li>
+			<li>數據類型 <input type= "text" id="type" value= {{type}}></li>  
+			<li>評分方法 <input type= "text" id="mesure" value= {{mesure}}></li> 
+			<li>適用團隊 <input type="text" id="teams" value= {{teams}}></li>
+			<li>評分者 <input type="text" id="remarker" value= {{remarker}}></li>
+			<li>指標來源 <input type="text" id="kpiSource" value= {{kpiSource}}></li>
 			<button id="save" class="btn btn-info"> 完成 </button>
 		</ul>
 	</div>
@@ -129,7 +129,7 @@
 			<li>適用團隊: {{teams}}</li>
 			<li>評分者: {{remarker}}</li>
 			<li>指標來源: {{kpiSource}}</li>
-			<!--<li>createdOn: {{createdOn}}</li> </!-->
+			<li>createdOn: {{createdOn}}</li> 
 		</ul>
 	</article>
 </template>
@@ -147,7 +147,7 @@
 			<li>適用團隊: {{teams}}</li>
 			<li>評分者: {{remarker}}</li>
 			<li>指標來源: {{kpiSource}}</li>
-			<!--<li>createdOn: {{createdOn}}</li> </!-->
+			<!--li>createdOn: {{createdOn}}</li-->
 		</ul>
 	</article>
 </template>
@@ -217,28 +217,6 @@
 </template>
 
 
-
-
-<template name="newTeamKPIForm">
-<div class="newTeamKPIForm">
-	Finance <input type="text" id="weightFinance" class="input-mini" placeholder="權重" /> <br> 
-	Client <input type="text" id="weightClient" class="input-mini" placeholder="權重" /> <br>
-	Intern <input type="text" id="weightIntern" class="input-mini" placeholder="權重" /> <br>
-	Study <input type="text" id="weightStudy" class="input-mini" placeholder="權重" /> 
-</div>
-</template> 
-
-
-<template name="editTeamKPIForm">
-{{#if show}}
-<div class="editTeamKPIForm">
-	Finance <input type="text" id="weightFinance" class="input-mini" placeholder= {{this.weightFinance}}  /> <br> 
-	Client <input type="text" id="weightClient" class="input-mini" placeholder=0 /> <br>
-	Intern <input type="text" id="weightIntern" class="input-mini" placeholder=0 /> <br>
-	Study <input type="text" id="weightStudy" class="input-mini" placeholder=0 /> 
-</div>
-{{/if}}
-</template> 
 
 
 <template name="teams">

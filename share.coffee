@@ -1,7 +1,7 @@
 share.KPIs = new Meteor.Collection "bsckpis" # expose this for debugging
 share.Hospitals = new Meteor.Collection "hospitals"
 share.Teams= new Meteor.Collection "teams"
-share.CurrentObjects = new Meteor.Collection "currentObjects"
+#share.CurrentObjects = new Meteor.Collection "currentObjects"
 share.Tasks = new Meteor.Collection "tasks"
 
 
@@ -25,6 +25,7 @@ share.consolelog = (t)->
 	#console.log "@data", this.data, "is", t.data 
 	t
 
+###
 share.GetHospital = -> share.CurrentObjects.findOne()?.hospital
 
 share.SetHospital = (hospital)-> 
@@ -34,4 +35,5 @@ share.SetHospital = (hospital)->
 
 	share.CurrentObjects.update indx: obj.indx, 
 		obj, 
-		upsert: true	
+		upsert: true
+###	

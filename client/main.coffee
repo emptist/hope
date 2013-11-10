@@ -18,14 +18,14 @@ Meteor.subscribe "teamsChannel"
 Meteor.subscribe "bsckpisChannel"
 Meteor.subscribe "tasksChannel"
 Meteor.subscribe "hospitalsChannel"
-Meteor.subscribe "currentObjects"
+#Meteor.subscribe "currentObjects"
 
 
 
 
 #------------------------ helpers ------------------------------------
 fourPerspectives = ['财务','客户','学习成长','内部流程'] 
-logCreated = (self)->console.log "created:", self.data
+logCreated = (self)-> #console.log "created:", self.data
 logRendered = (self)->console.log "rendered:", self.data
 logDestroyed = (self)->console.log "destroyed:", self.data
 
@@ -42,7 +42,7 @@ share.isViewing = isViewing
 
 
 clientKPIObj = (e, t) ->
-	getValue = (id) -> t.find(id).value
+	getValue = (id) -> t.find(id).value.trim() #.replace(/^\s+|\s+$/g,'')
 	indx:getValue "#title"
 	perspective: getValue "#perspective"
 	category: getValue "#category"
@@ -58,7 +58,7 @@ clientKPIObj = (e, t) ->
 
 
 clientTeamObj = (o, e, t) ->
-	getValue = (id) ->	t.find(id)?.value
+	getValue = (id) ->	t.find(id)?.value.trim() #replace(/^\s+|\s+$/g,'')
 	hospital= getValue 'input#hospital'
 	team = getValue 'input#team'
 	#share.consolelog "in clientTeamObj t.perspectives() is now #{t.perspectives()}"
@@ -195,7 +195,7 @@ Template.bsckpis.showButtons = ->
 
 Template.bsckpis.kpis = ->
 	if isViewing "perspective"
-		share.KPIs.find perspective: Session.get "currentDetail" 
+		share.KPIs.find perspective: Session.get "currentDetail", sort:{perspective: -1, category: -1, title: -1} 
 	else
 		share.consolelog share.KPIs.find {}, sort:{perspective: -1, category: -1, title: -1}
 
@@ -230,7 +230,8 @@ Template.editKpiForm.rendered = ->
 
 Template.editKpiForm.events
 	'click #save': (e,t) -> 
-		Meteor.call "kpi", 
+		Meteor.call "kpiId", 
+			@_id
 			clientKPIObj e,t
 			(err, id) ->
 				share.consolelog "editKpiForm event save #{t.data._id}" # is known that share.._id here is undefined 
@@ -313,10 +314,10 @@ Template.teams.events
 #------------------------- newTeamForm -----------------------------
 Template.newTeamForm.show = ->
 	isViewing "newTeamForm" #,"teams"
-
+###
 Template.newTeamForm.showNewTeamKpiForm = ->
 	isViewing('newTeamForm') and Session.get "showNewTeamKpiForm"
-
+###
 ###
 Template.newTeamForm.created = ->
 	logCreated(this)
@@ -354,10 +355,10 @@ Template.newTeamForm.events
 	'keypress input#hospital': (e,t)->
 		if e.keyCode is 13
 			share.consolelog setHospital e.target.value
-	
+	###
 	'click #kpis':(e,t)->
 		Session.set "showNewTeamKpiForm", true
-	
+	###
 	'click button#save': (e,t) -> 
 		console.log t.find( "input#team").value
 		Meteor.call "team", 
