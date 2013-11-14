@@ -144,7 +144,7 @@
 			<li>定義: {{definition}}</li>
 			<li>數據類型: {{type}}</li>  
 			<li>評分方法: {{mesure}}</li>
-			<li>適用團隊: {{teams}}</li>
+			<!-- li>適用團隊: {{teams}}</li -->
 			<li>評分者: {{remarker}}</li>
 			<li>指標來源: {{kpiSource}}</li>
 			<!--li>createdOn: {{createdOn}}</li-->
@@ -227,12 +227,12 @@
 			<hr>
 		</div>
 		<div class="teams">
-			<ul class="teams">
+			<ol class="teams">
 			{{#each teams}}
 				<li> {{> team}} </li> 
 				<hr>
 			{{/each}}
-			</ul>
+			</ol>
 		</div>
 	{{else}}
 		<input type="text" id="hospital" placeholder="醫院名" />
@@ -267,11 +267,11 @@
 		 <div class="viewTeamForm">
 			<div class="teamKPIForm" >
 				{{#each perspectives}}
-					<h4>{{weight}} {{perspective}}</h4>
+					<h4>{{weight}}% {{perspective}}</h4>
 					<ul>
 					{{#each kpis}}
 						<li>
-							{{weight}} {{title}} 
+							{{weight}}% {{title}} 
 							{{#if showKpiForm}}  
 							{{> viewKpiFormInline}}
 							{{/if}}
