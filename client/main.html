@@ -149,8 +149,8 @@
 			<li>數據類型: {{type}}</li>  
 			<li>評分方法: {{mesure}}</li>
 			<!-- li>適用團隊: {{teams}}</li -->
-			<li>評分者: {{remarker}}</li>
-			<li>指標來源: {{kpiSource}}</li>
+			<!-- li>評分者: {{remarker}}</li -->
+			<!-- li>指標來源: {{kpiSource}}</li -->
 			<!--li>createdOn: {{createdOn}}</li-->
 		</ul>
 	</article>
@@ -275,7 +275,7 @@
 					<ul>
 					{{#each kpis}}
 						<li>
-							{{weight}}% {{title}} 
+							{{weight}}% {{title}}({{category}})
 							{{#if showKpiForm}}  
 							{{> viewKpiFormInline}}
 							{{/if}}
