@@ -1,9 +1,11 @@
 <template name="main">
+{{#if showButtons}}
 <header class="navbar" >
 	<div class="navbar-inner">
   		{{> header}}
 	</div>
 </header>
+{{/if}}
 
 <div id="main" class= "row-fluid" >
   {{#if adminLoggedIn}}
