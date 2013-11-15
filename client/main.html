@@ -20,11 +20,13 @@
 
 
 <template name="header">
+{{#if showButtons}}
 	<ul class="nav pull-right">
 		<li>{{loginButtons}}</li>
 	</ul>
 <a class="brand" href="/"> HOPE </a>
 <h1> 醫院績效管理 </h1>
+{{/if}}
 {{#if adminLoggedIn}}
 	{{#if showButtons}}
 	<button id="bsckpis" class="btn btn-primary" "navbar-btn">指標</button>	
@@ -262,7 +264,7 @@
 			<button id="removeTeam" class="btn btn-danger btn-xs"> 删 </button>
 			<button id="editTeamForm" class="btn btn-info btn-xs"> 編 </button>
 		{{/if}} 
- 		{{team}} <a href="/category&{{category}}">{{category}}</a> 
+ 		{{team}} {{category}}<!-- a href="/category&{{category}}">{{category}}</a --> 
 	 </h4>
 		 <div class="viewTeamForm">
 			<div class="teamKPIForm" >
