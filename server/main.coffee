@@ -59,7 +59,8 @@ Meteor.methods
 	kpi: (obj)-> upsertTo share.KPIs, obj
 	kpiId: (id,obj)-> upsertToId share.KPIs, id, obj
 	team: (obj)-> upsertTo share.Teams, obj
-	task: (obj)-> upsertTo share.Tasks, obj
+	task: (obj)-> insertInto share.Tasks, obj
+	taskId: (obj)-> upsertToId share.Tasks, id, obj
 
 	#hospital: (obj)-> upsertTo share.Hospitals, obj
 

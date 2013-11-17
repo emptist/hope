@@ -122,7 +122,7 @@
 			<!--<a href="/perspective&{{perspective}}">-->
 				{{#if showButtons}}
 					<button id="removeKPI" class="btn btn-danger btn-xs"> 删 </button>
-					<button id="editKpiForm" class="btn btn-info btn-xs"> 編 </button>
+					<button id="editKpiForm" class="btn btn-info btn-xs"> 改 </button>
 				{{/if}} 
 				<strong>{{title}}</strong> [ <a href="/perspective&{{perspective}}"> {{perspective}}</a> / {{category}} ] <br>
 			
@@ -185,6 +185,7 @@
 		</div>
 	{{else}}
 		<input type="text" id="hospital" placeholder="醫院名" />
+		{{> hospitals}}
 	{{/if}}
 {{/if}}
 </template>
@@ -221,8 +222,6 @@
 </template>
 
 
-
-
 <template name="teams">
 {{#if show}}
 	{{#if hospital}}
@@ -240,8 +239,22 @@
 		</div>
 	{{else}}
 		<input type="text" id="hospital" placeholder="醫院名" />
+		{{> hospitals}}
 	{{/if}}
 {{/if}}  
+</template>
+
+
+<template name="hospitals">
+<h3> 醫院 </h3>
+<hr>
+<div class="hospitals">
+	<ol class="hospitals">
+	{{#each hospitals}}
+		<li>  {{this}}  </li> 
+	{{/each}}
+	</ol>
+</div>
 </template>
 
 
@@ -264,7 +277,7 @@
 	<h4> 
 		{{#if showButtons}}
 			<button id="removeTeam" class="btn btn-danger btn-xs"> 删 </button>
-			<button id="editTeamForm" class="btn btn-info btn-xs"> 編 </button>
+			<button id="editTeamForm" class="btn btn-info btn-xs"> 改 </button>
 		{{/if}} 
  		{{team}} {{category}}<!-- a href="/category&{{category}}">{{category}}</a --> 
 	 </h4>

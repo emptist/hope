@@ -4,20 +4,45 @@
 	{{/if}}
 </template>
 
-
+<template name="newSubtaskForm">
+	{{#if show}}
+	<input type="text" id="text" />
+	{{/if}}
+</template>
 
 <template name="tasks">
 {{#if show}}
   <ul class = "list-unstyled">
   	{{#each items}}
   		{{> item}}
-		{{/each}}
+	{{/each}}
+  </ul>
+{{/if}}
+</template>
+
+<template name="subtasks">
+{{#if show}}
+  <ul class = "list-unstyled">
+  	{{#each this.items}}
+  		{{> item}}
+	{{/each}}
   </ul>
 {{/if}}
 </template>
 
 
-
 <template name="item">
-	<li>{{this.text}}</li>
+	
+	<li>
+	{{#if showButtons}}
+		<button id="remove" class="btn btn-danger btn-xs"> 删 </button>
+		<button id="edit" class="btn btn-info btn-xs"> 改 </button>
+		<button id="add" class="btn btn-warning btn-xs"> 加 </button>
+	{{/if}}
+	{{this.text}}  
+	</li>
+	{{#if addSubtask}}
+		{{> newTaskForm}}
+	{{/if}}
+	{{> subtasks}}
 </template>

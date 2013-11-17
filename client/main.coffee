@@ -13,6 +13,13 @@ setHospital = (hospital)->
 setTeam = (team)-> 
 	Session.set "team", team
 
+setEditting = ->
+	Session.set "editting #{@._id}", true
+
+setEdittingFalse = (t)->
+	#Session.set "editting #{@._id}", false # <-- I haven't tried if this works
+	Session.set "editting #{t.data._id}", false
+
 #Meteor.subscribe "teamsChannel", getHospital() 
 Meteor.subscribe "teamsChannel" 
 Meteor.subscribe "bsckpisChannel"
@@ -237,7 +244,7 @@ Template.editKpiForm.events
 			clientKPIObj e,t
 			(err, id) ->
 				share.consolelog "editKpiForm event save #{t.data._id}" # is known that share.._id here is undefined 
-				Session.set "editting #{t.data._id}", false
+				setEdittingFalse(t)
 		
 
 
@@ -249,7 +256,7 @@ Template.viewKpiForm.events
 	
 	'click #editKpiForm':(e,t) ->
 		share.consolelog "viewKpiForm event editKpiForm #{@._id}"
-		Session.set "editting #{@._id}", true #"editting #{t.data._id}", true
+		setEditting()
 	
 	'click #removeKPI':	(e,t) ->
 		share.consolelog "viewKpiForm event removeKPI #{@._id}"
@@ -270,8 +277,8 @@ Template.viewKpiFormInline.events
 	
 	'click #editKpiForm':(e,t) ->
 		share.consolelog "viewKpiForm event editKpiForm #{@._id}"
-		Session.set "editting #{@._id}", true #"editting #{t.data._id}", true
-	
+		setEditting()
+
 	'click #removeKPI':	(e,t) ->
 		share.consolelog "viewKpiForm event removeKPI #{@._id}"
 		Meteor.call "removeKPI", @._id
@@ -279,8 +286,22 @@ Template.viewKpiFormInline.events
 	
 
 
+###----------------------- hospitals -------------------------------
+###
+getSet = (aCollection) ->
+	set = []
+	for item in aCollection
+		h = item.hospital
+		unless h in set
+			set.push h if h?.length >1
+	set
 
+Template.hospitals.hospitals = ->
+	getSet share.Teams.find().fetch()
 
+Template.hospitals.events 
+	'click': (e,t) ->
+		setHospital e.currentTarget.value # doesn't work
 
 
 #------------------------- teams ----------------------------------- 
@@ -418,8 +439,8 @@ Template.editTeamForm.events
 			clientTeamObj this, e, t
 			(err, id) ->
 				share.consolelog "editTeamForm event save #{t.data._id}" # is known that share.._id here is undefined 
-				Session.set "editting #{t.data._id}", false
-###				Session.set "editTeamKPIForm #{t.data._id}", false
+				setEdittingFalse(t)
+###			Session.set "editTeamKPIForm #{t.data._id}", false
 				
 	
 	'click #editTeamKPIForm': (e,t) ->
@@ -457,7 +478,7 @@ Template.viewTeamForm.rendered = ->
 Template.viewTeamForm.events
 	'click #editTeamForm':(e,t) ->
 		share.consolelog "viewTeamForm event editTeamForm #{@._id}"
-		Session.set "editting #{@._id}", true #"editting #{t.data._id}", true
+		setEditting()
 	
 	'click #removeTeam':	(e,t) ->
 		share.consolelog "viewTeamForm event removeTeam #{@._id}"
@@ -490,10 +511,10 @@ Template.editTeamKPIForm.events
 ###
 
 
-### newTaskForm
+### ----------------------- newTaskForm --------------------------------
 ###
-add = (value) ->
-	Meteor.call "task", text:value
+addTask = (value) ->
+	Meteor.call "task",  text:value 
 
 Template.newTaskForm.show = ->
 		share.isViewing "newTaskForm"
@@ -502,12 +523,27 @@ Template.newTaskForm.events
 		'keypress input': (e,t) ->
 		  if e.keyCode is 13
 		    input = t.find "input"
-		    add input.value
+		    addTask input.value
 		    input.value = ""
 
+### ----------------------- newSubtaskForm --------------------------------
+###
+addSubtask = (value) ->
+	Meteor.call "task", text:value
+
+Template.newSubtaskForm.show = ->
+		share.isViewing "newTaskForm"
+
+Template.newSubtaskForm.events
+		'keypress input': (e,t) ->
+		  if e.keyCode is 13
+		    input = t.find "input"
+		    addTask input.value
+		    input.value = ""
+		    Session.set "#{@_id} addSubTask", false
 
 
-###	tasks
+###	----------------------- tasks ---------------------------------------
 ###
 
 Template.tasks.show = ->
@@ -516,17 +552,18 @@ Template.tasks.show = ->
 Template.tasks.items = ->
 	share.consolelog share.Tasks.find()
 
+###	------------------------ item --------------------------------------
+###
 remove = (item) ->
 	id = share.Tasks.findOne(item)._id 
 	Meteor.call "removeTask", id 
 
-Template.item.events
-	'click': (e,t)->
-	  share.consolelog t.data
-	  remove(t.data)
 
-###	item
-###
+Template.item.showButtons = ->
+	showAsEditMode()
+
+Template.item.addSubTask = ->
+	Session.get "#{@_id} addSubTask"
 
 Template.item.rendered = ->
 	logRendered(this)
@@ -536,6 +573,15 @@ Template.item.created = ->
 
 Template.item.destroyed = ->
 	logDestroyed(this)
+
+Template.item.events
+	'click #remove': (e,t) ->
+	  share.consolelog t.data
+	  remove(t.data)
+	'click #edit': (e,t) ->
+		setEditting()
+	'click #add': (e, t) ->
+		Session.set "#{@_id} addSubTask", true
 
 ### ============================================================
 ###
