@@ -13,8 +13,8 @@ setHospital = (hospital)->
 setTeam = (team)-> 
 	Session.set "team", team
 
-setEditting = ->
-	Session.set "editting #{@._id}", true
+setEditting = (self) ->
+	Session.set "editting #{self._id}", true # in fact it's @_id
 
 setEdittingFalse = (t)->
 	#Session.set "editting #{@._id}", false # <-- I haven't tried if this works
@@ -256,7 +256,7 @@ Template.viewKpiForm.events
 	
 	'click #editKpiForm':(e,t) ->
 		share.consolelog "viewKpiForm event editKpiForm #{@._id}"
-		setEditting()
+		setEditting(this)
 	
 	'click #removeKPI':	(e,t) ->
 		share.consolelog "viewKpiForm event removeKPI #{@._id}"
@@ -277,7 +277,7 @@ Template.viewKpiFormInline.events
 	
 	'click #editKpiForm':(e,t) ->
 		share.consolelog "viewKpiForm event editKpiForm #{@._id}"
-		setEditting()
+		setEditting(this)
 
 	'click #removeKPI':	(e,t) ->
 		share.consolelog "viewKpiForm event removeKPI #{@._id}"
@@ -478,7 +478,7 @@ Template.viewTeamForm.rendered = ->
 Template.viewTeamForm.events
 	'click #editTeamForm':(e,t) ->
 		share.consolelog "viewTeamForm event editTeamForm #{@._id}"
-		setEditting()
+		setEditting(this)
 	
 	'click #removeTeam':	(e,t) ->
 		share.consolelog "viewTeamForm event removeTeam #{@._id}"
@@ -579,7 +579,7 @@ Template.item.events
 	  share.consolelog t.data
 	  remove(t.data)
 	'click #edit': (e,t) ->
-		setEditting()
+		setEditting(this)
 	'click #add': (e, t) ->
 		Session.set "#{@_id} addSubTask", true
 
