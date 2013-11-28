@@ -48,12 +48,15 @@
 {{#if show}}
 	<form class="newKpiForm">
 	<div class="controls">
-		<input type= "text" id="perspective"  placeholder="一級維度" />
+		<!--<input type= "text" id="perspective"  placeholder="一級維度" />-->
+		<select id="perspective" placeholder="一級維度"><option>一級維度</option><option> 财务</option><option>客户 </option><option> 内部流程 </option><option> 学习成长</option></select>
 		<input type= "text" id="category"  placeholder="二級維度" />
 		<input type="text" id="title"  placeholder="指標名稱" /> 
 		<input type= "text" id="definition"  placeholder="定義" />
-		<input type= "text" id="type"   placeholder="1大好,2小好,3接近好,4區間內好" />  
-		<input type= "text" id="mesure"   placeholder="評分方法" /> 
+		<!--<input type= "text" id="type"   placeholder="1大好,2小好,3接近好,4區間內好" />  -->
+		<select id="type"><option>數據類型</option><option>大好</option><option>小好</option><option>接近好</option><option>區間內好</option></select>
+		<!--<input type= "text" id="mesure"   placeholder="評分方法" /> -->
+		<select id="mesure"><option>評分方法</option><option>自比</option><option>他比</option></select>
 		<input type="text" id="teams"  placeholder="適用團隊" />
 		<input type="text" id="remarker"  placeholder="評分者" />
 		<input type="text" id="kpiSource"  placeholder="指標來源" />
@@ -97,12 +100,15 @@
 {{#if show}}
 	<div class="editKpiForm">
 		<ul>
-			<li>一級維度 <input type= "text" id="perspective" value= {{perspective}}></li>
+			<!--<li>一級維度 <input type= "text" id="perspective" value= {{perspective}}></li>-->
+			<li>一級維度<select id="perspective" value={{perspective}}><option> 财务</option><option>客户 </option><option> 内部流程 </option><option> 学习成长</option></select></li>
 			<li>二級維度 <input type= "text" id="category" value= {{category}}></li>
 			<li>指標名稱 <input type="text" id="title" value= {{title}}></li> 
 			<li>定義 <input type= "text" id="definition" value= {{definition}}></li>
-			<li>數據類型 <input type= "text" id="type" value= {{type}}></li>  
-			<li>評分方法 <input type= "text" id="mesure" value= {{mesure}}></li> 
+			<!--<li>數據類型 <input type= "text" id="type" value= {{type}}></li>-->
+			<li>數據類型<select id="type" value={{type}}><option>大好</option><option>小好</option><option>接近好</option><option>區間內好</option></select></li>  
+			<!--<li>評分方法 <input type= "text" id="mesure" value= {{mesure}}></li>-->
+			<li>評分方法<select id="mesure" value={{mesure}}><option>自比</option><option>他比</option></select></li> 
 			<li>適用團隊 <input type="text" id="teams" value= {{teams}}></li>
 			<li>評分者 <input type="text" id="remarker" value= {{remarker}}></li>
 			<li>指標來源 <input type="text" id="kpiSource" value= {{kpiSource}}></li>
@@ -168,11 +174,18 @@
 			</div>
 			<div class="selectKpiForm" >
 				{{#each perspectives}}
-					<h4> <input type="text" id="weight{{perspective}}" class="input-mini" placeholder=0 /> {{perspective}} </h4> <br>
+					<h4><div class="input-append">
+					 <input type="text" id="weight{{perspective}}" class="input-mini" placeholder=0 /> 
+					<span class="add-on">%</span></div>
+					{{perspective}} </h4> <br>
 					<ul>
 					{{#each kpis}}
 						<li>
-							<input type="text" id="weight{{title}}" class="input-mini" placeholder=0 /> {{title}}
+							<h5>
+							<div class="input-append">
+							<input type="text" id="weight{{title}}" class="input-mini" placeholder=0 /> 
+							<span class="add-on">%</span></div>
+							{{title}}</h5>
 							{{> viewKpiFormInline}}
 						</li>
 					{{/each}}
@@ -204,14 +217,19 @@
 		</div>
 		<div class="selectKPIForm" >
 			{{#each moreperspectives}}
-				<h4><input type="text" id="weight{{perspective}}" class="input-mini" value="{{weight}}" /> {{perspective}} </h4>
+				<h4><div class="input-append">
+				<input type="text" id="weight{{perspective}}" class="input-mini" value="{{weight}}" /><span class="add-on">%</span></div> {{perspective}} </h4>
 				<ul>
 				{{#each kpis}}
+					<h5>
 					<li>
-						<input type="text" id="weight{{title}}" class="input-mini" value="{{weight}}" />{{title}} 
+						<div class="input-append">
+						<input type="text" id="weight{{title}}" class="input-mini" value="{{weight}}" />
+						<span class="add-on">%</span></div>
+						{{title}} </h5>
 						{{> viewKpiFormInline}}
 					</li>
-				{{/each}}
+					{{/each}}
 				</ul>
 			{{/each}}	
 		</div>	
