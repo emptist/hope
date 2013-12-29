@@ -9,8 +9,9 @@
 
 <div id="main" class= "row-fluid" >
   {{#if adminLoggedIn}}
-  	  {{> newKpiForm}}
-	  {{> newTeamForm}}
+	  {{> repeatedKpi}}
+	  {{> newKpiForm}}
+  	  {{> newTeamForm}}
 	  {{> newTaskForm}}
 	  {{> bsckpis}}
 	  {{> teams}}
@@ -43,6 +44,16 @@
 </template>
 
 
+<template name= "repeatedKpi">
+{{#if show}}
+<div class = "modify">
+	<h4>重复，请增改原有内容</h4>
+	{{#each kpis}}
+		{{> kpi}}
+	{{/each}}
+</div>
+{{/if}}
+</template>
 
 <template name="newKpiForm">
 {{#if show}}
@@ -99,7 +110,7 @@
 <template name="editKpiForm">
 {{#if show}}
 	<div class="editKpiForm">
-		<ul>
+		<ul class = 'inline'>
 			<!--<li>一級維度 <input type= "text" id="perspective" value= {{perspective}}></li>-->
 			<li>一級維度<select id="perspective" value={{perspective}}><option> 财务</option><option>客户 </option><option> 内部流程 </option><option> 学习成长</option></select></li>
 			<li>二級維度 <input type= "text" id="category" value= {{category}}></li>

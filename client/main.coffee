@@ -208,11 +208,30 @@ Template.bsckpis.kpis = ->
 	else
 		share.consolelog share.KPIs.find {}, sort:{perspective: -1, category: -1, title: -1}
 
+
+
+#------------------------- repeatedKpi ----------------------------------
+repeatedKpi = -> Session.get "repeatedKpi"
+
+Template.repeatedKpi.show = -> 
+	repeatedKpi() and (isViewing "newKpiForm")
+
+Template.repeatedKpi.kpis = ->
+	Session.set "editting #{repeatedKpi()}"
+	(share.KPIs.find _id: do repeatedKpi).fetch()
+
+
+
 #------------------------- newKpiForm ----------------------------------
 Template.newKpiForm.show = -> isViewing "newKpiForm","perspective" 
 
 
 Template.newKpiForm.events
+	'keypress input#title': (e,t) ->
+		  if e.keyCode is 9 # tab
+		    input = t.find('input#title').value.trim()
+		    Session.set "repeatedKpi", (share.KPIs.findOne title:input)?._id
+
 	'click #save': (e,t) -> 
 		Meteor.call "kpi", 
 			clientKPIObj e,t
@@ -250,7 +269,7 @@ Template.editKpiForm.events
 
 #------------------------- viewKpiForm ----------------------------------
 Template.viewKpiForm.showButtons = ->
-	isViewing("bsckpis", "perspective") and showAsEditMode()
+	isViewing("bsckpis", "perspective","newKpiForm") and showAsEditMode()
 
 Template.viewKpiForm.events
 	
