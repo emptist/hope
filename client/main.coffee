@@ -197,7 +197,7 @@ Template.header.events
 
 #------------------------- bsckpis ---------------------------------------
 Template.bsckpis.show = ->
-	isViewing "bsckpis","perspective" ,"newKpiForm"
+	isViewing "bsckpis","perspective" #,"newKpiForm"
 
 Template.bsckpis.showButtons = ->
 	showAsEditMode()
