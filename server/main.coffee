@@ -24,8 +24,8 @@ Meteor.publish "hospitalsChannel" , ->
 
 
 removeFrom = (collection, id)->
-		if share.adminLoggedIn
-			collection.remove _id: id
+	if share.adminLoggedIn
+		collection.remove _id: id
 
 upsertTo = (collection, obj)-> 
 	# each obj should have an indx; return Mongodb object _id
