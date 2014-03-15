@@ -67,16 +67,16 @@ clientKPIObj = (e, t) ->
 
 clientTeamObj = (o, e, t) ->
 	getValue = (id) ->	t.find(id)?.value.trim() #replace(/^\s+|\s+$/g,'')
-	hospital= getValue 'input#hospital'
-	team = getValue 'input#team'
+	hospital= getValue '#hospital'
+	team = getValue '#team'
 	#share.consolelog "in clientTeamObj t.perspectives() is now #{t.perspectives()}"
 
 	obj = { 
 		indx: (hospital + "-" + team) 
-		hospital: getValue "input#hospital"
-		team: getValue "input#team"
-		department: getValue "input#department" 
-		category: getValue "input#category"
+		hospital: getValue "#hospital"
+		team: getValue "#team"
+		department: getValue "#department" 
+		category: getValue "#category"
 	}
 	obj.perspectives = ( 
 		# too complicated
