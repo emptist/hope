@@ -399,10 +399,16 @@ Template.newTeamForm.events
 	'keydown input#hospital': (e,t)->
 		if e.keyCode is 13
 			share.consolelog setHospital e.target.value
-	###
+	
 	'click #kpis':(e,t)->
+		#filter for kpis here
+		#getValue = (id) ->	t.find(id)?.value.trim()
+		#getValue "#category"
+	
+	###
 		Session.set "showNewTeamKpiForm", true
 	###
+	
 	'click button#save': (e,t) -> 
 		console.log t.find( "input#team").value
 		Meteor.call "team", 
