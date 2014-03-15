@@ -227,7 +227,7 @@ Template.newKpiForm.show = -> isViewing "newKpiForm","perspective"
 
 
 Template.newKpiForm.events
-	'keypress input#title': (e,t) ->
+	'keydown input#title': (e,t) ->
 		  if e.keyCode is 9 # tab
 		    input = t.find('input#title').value.trim()
 		    Session.set "repeatedKpi", (share.KPIs.findOne title:input)?._id
@@ -345,7 +345,7 @@ Template.teams.hospital = ->
 	getHospital()
 
 Template.teams.events
-	'keypress input#hospital': (e,t)->
+	'keydown input#hospital': (e,t)->
 		if e.keyCode is 13
 			share.consolelog setHospital e.target.value
 
@@ -394,7 +394,7 @@ Template.newTeamForm.perspectives = ->
 		p
 
 Template.newTeamForm.events
-	'keypress input#hospital': (e,t)->
+	'keydown input#hospital': (e,t)->
 		if e.keyCode is 13
 			share.consolelog setHospital e.target.value
 	###
@@ -410,7 +410,7 @@ Template.newTeamForm.events
 				viewDetail "team", t
 
 ###
-	'keypress input#team': (e,t)->
+	'keydown input#team': (e,t)->
 		if e.keyCode is 13
 			share.consolelog setTeam e.target.value
 ###
@@ -449,7 +449,7 @@ Template.editTeamForm.moreperspectives = ->
 	
 
 Template.editTeamForm.events
-	'keypress input#hospital': (e,t)->
+	'keydown input#hospital': (e,t)->
 		if e.keyCode is 13
 			share.consolelog setHospital e.target.value
 	
@@ -513,16 +513,16 @@ Template.editTeamKPIForm.show = ->
 	Session.get "editTeamKPIForm #{@._id}"
 
 Template.editTeamKPIForm.events
-	'keypress input#weightFinance': (e,t)->
+	'keydown input#weightFinance': (e,t)->
 			if e.keyCode is 13
 				this.weightFinance = e.target.value
-	'keypress input#weightClient': (e,t)->
+	'keydown input#weightClient': (e,t)->
 			if e.keyCode is 13
 				this.weightClient = e.target.value
-	'keypress input#weightIntern': (e,t)->
+	'keydown input#weightIntern': (e,t)->
 			if e.keyCode is 13
 				this.weightIntern = e.target.value
-	'keypress input#weightStudy': (e,t)->
+	'keydown input#weightStudy': (e,t)->
 			if e.keyCode is 13
 				share.consolelog this.weightStudy = e.target.value
 ###
@@ -539,7 +539,7 @@ Template.newTaskForm.show = ->
 		share.isViewing "newTaskForm"
 
 Template.newTaskForm.events
-		'keypress input': (e,t) ->
+		'keydown input': (e,t) ->
 		  if e.keyCode is 13
 		    input = t.find "input"
 		    addTask input.value
@@ -554,7 +554,7 @@ Template.newSubtaskForm.show = ->
 		share.isViewing "newTaskForm"
 
 Template.newSubtaskForm.events
-		'keypress input': (e,t) ->
+		'keydown input': (e,t) ->
 		  if e.keyCode is 13
 		    input = t.find "input"
 		    addTask input.value
