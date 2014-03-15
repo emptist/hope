@@ -1,96 +1,106 @@
 <template name="main">
-{{#if showButtons}}
-<header class="navbar" >
-	<div class="navbar-inner">
-  		{{> header}}
-	</div>
-</header>
-{{/if}}
+	{{#if showButtons}}
+		<header class="navbar" >
+			<div class="navbar-inner">
+		  		{{> header}}
+			</div>
+		</header>
+	{{/if}}
 
-<div id="main" class= "row-fluid" >
-  {{#if adminLoggedIn}}
-	  {{> repeatedKpi}}
-	  {{> newKpiForm}}
-  	  {{> newTeamForm}}
-	  {{> newTaskForm}}
-	  {{> bsckpis}}
-	  {{> teams}}
-	  {{> tasks}}
-  {{/if}}
-</div>
+	<div id="main" class= "row-fluid" >
+		{{#if adminLoggedIn}}
+		  {{> repeatedKpi}}
+		  {{> newKpiForm}}
+			  {{> newTeamForm}}
+		  {{> newTaskForm}}
+		  {{> bsckpis}}
+		  {{> teams}}
+		  {{> tasks}}
+		{{/if}}
+	</div>
 </template>
 
 
 
 <template name="header">
-{{#if showButtons}}
-	<ul class="nav pull-right">
-		<li>{{loginButtons}}</li>
-	</ul>
-<a class="brand" href="/"> HOPE </a>
-<h1> 醫院績效管理 </h1>
-{{/if}}
-{{#if adminLoggedIn}}
 	{{#if showButtons}}
-	<button id="bsckpis" class="btn btn-primary" "navbar-btn">指標</button>	
-	<button id="newKpiForm" class="btn btn-warning" "navbar-btn">添加指標</button>	
-	<button id="teams" class="btn btn-info" "navebar-btn">科組</button>
-	<button id="newTeamForm" class="btn btn-warning" "navebar-btn">添加團隊</button>
-	<button id="tasks" class="btn btn-info" "navebar-btn">Tasks</button>
-	<button id="newTaskForm" class="btn btn-warning" "navebar-btn">添加Task</button>
-	<button id="printable" class="btn btn-default" "navbar-btn" >{{currentMode}}</button>
+		<ul class="nav pull-right">
+			<li>{{loginButtons}}</li>
+		</ul>
+		<a class="brand" href="/"> HOPE </a>
+		<h1> 醫院績效管理 </h1>
 	{{/if}}
-{{/if}}
+
+	{{#if adminLoggedIn}}
+		{{#if showButtons}}
+			<button id="bsckpis" class="btn btn-primary" "navbar-btn">指標</button>	
+			<button id="newKpiForm" class="btn btn-warning" "navbar-btn">添加指標</button>	
+			<button id="teams" class="btn btn-info" "navebar-btn">科組</button>
+			<button id="newTeamForm" class="btn btn-warning" "navebar-btn">添加團隊</button>
+			<button id="tasks" class="btn btn-info" "navebar-btn">Tasks</button>
+			<button id="newTaskForm" class="btn btn-warning" "navebar-btn">添加Task</button>
+			<button id="printable" class="btn btn-default" "navbar-btn" >{{currentMode}}</button>
+		{{/if}}
+	{{/if}}
 </template>
 
 
 <template name= "repeatedKpi">
-{{#if show}}
-<div class = "modify">
-	<h4>重复，请增改原有内容</h4>
-	{{#each kpis}}
-		{{> kpi}}
-	{{/each}}
-</div>
-{{/if}}
+	{{#if show}}
+		<div class = "modify">
+			<h4>重复，请增改原有内容</h4>
+			{{#each kpis}}
+				{{> kpi}}
+			{{/each}}
+		</div>
+	{{/if}}
 </template>
 
 <template name="newKpiForm">
-{{#if show}}
-	<form class="newKpiForm">
-	<div class="controls">
-		<!--<input type= "text" id="perspective"  placeholder="一級維度" />-->
-		<select id="perspective" placeholder="一級維度">
-			<option> 一級維度</option>
-			<option> 财务</option>
-			<option> 客户 </option>
-			<option> 内部流程 </option>
-			<option> 学习成长</option>
-		</select>
-		<input type= "text" id="category"  placeholder="二級維度" />
-		<input type="text" id="title"  placeholder="指標名稱" /> 
-		<input type= "text" id="definition"  placeholder="定義" />
-		<!--<input type= "text" id="type"   placeholder="1大好,2小好,3接近好,4區間內好" />  -->
-		<select id="type">
-			<option>數據類型</option>
-			<option>大好</option>
-			<option>小好</option>
-			<option>接近好</option>
-			<option>區間內好</option>
-		</select>
-		<!--<input type= "text" id="mesure"   placeholder="評分方法" /> -->
-		<select id="mesure">
-			<option>評分方法</option>
-			<option>自比</option>
-			<option>他比</option>
-		</select>
-		<input type="text" id="teams"  placeholder="適用團隊" />
-		<input type="text" id="remarker"  placeholder="評分者" />
-		<input type="text" id="kpiSource"  placeholder="指標來源" />
-		<button id="save" class="btn btn-info"> 完成 </button>
-	</div>
-	</form>
-{{/if}}
+	{{#if show}}
+		<form class="newKpiForm">
+			<h3>请勿使用全角字符以及中文标点!!</h3>
+			<div class="controls">
+				<!--<input type= "text" id="perspective"  placeholder="一級維度" />-->
+				<select id="perspective" placeholder="一級維度">
+					<option> 一級維度</option>
+					<option> 财务</option>
+					<option> 客户 </option>
+					<option> 内部流程 </option>
+					<option> 学习成长</option>
+				</select>
+				<input type= "text" id="category"  placeholder="二級維度" />
+				<input type="text" id="title"  placeholder="指標名稱" /> 
+				<input type= "text" id="definition"  placeholder="定義" />
+				<!--<input type= "text" id="type"   placeholder="1大好,2小好,3接近好,4区间内好" />  -->
+				<select id="type">
+					<option>數據類型</option>
+					<option>大好</option>
+					<option>小好</option>
+					<option>接近好</option>
+					<option>区间内好</option>
+				</select>
+				<!--<input type= "text" id="mesure"   placeholder="評分方法" /> -->
+				<select id="mesure">
+					<option>評分方法</option>
+					<option>自比</option>
+					<option>他比</option>
+				</select>
+				<select id="deptCategory">
+					<option>部門類型</option>
+					<option>临床</option>
+					<option>医技</option>
+					<option>职能</option>
+					<option>行政</option>
+					<option>后勤</option>
+				</select>
+				<input type="text" id="teams"  placeholder="適用團隊" />
+				<input type="text" id="remarker"  placeholder="評分者" />
+				<input type="text" id="kpiSource"  placeholder="指標來源" />
+				<button id="save" class="btn btn-info"> 完成 </button>
+			</div>
+		</form>
+	{{/if}}
 </template>
 
 
@@ -98,73 +108,84 @@
 
 
 <template name="bsckpis">
-{{#if show}}
-	<div class="bsckpis">
-		<h3> 平衡記分卡指標庫 </h3>
-		<hr>
-		{{#each kpis}}
-			{{> kpi}}
-		{{/each}}
-	</div>
-{{/if}}
+	{{#if show}}
+		<div class="bsckpis">
+			<h3> 平衡記分卡指標庫 </h3>
+			<hr>
+			{{#each kpis}}
+				{{> kpi}}
+			{{/each}}
+		</div>
+	{{/if}}
 </template>
 
 
 
 
 <template name="kpi">
-{{#if editting}}
-	{{> editKpiForm}}
-{{else}}
-	{{> viewKpiForm}}
-{{/if}}
+	{{#if editting}}
+		{{> editKpiForm}}
+	{{else}}
+		{{> viewKpiForm}}
+	{{/if}}
 </template>
 
 
 
 
 <template name="editKpiForm">
-{{#if show}}
-	<div class="editKpiForm">
-		<ul class = 'inline'>
-			<!--<li>一級維度 <input type= "text" id="perspective" value= {{perspective}}></li>-->
-			<li>一級維度
-				<select id="perspective" value={{perspective}}>
-					<option> 一級維度</option>
-					<option> 财务</option>
-					<option>客户 </option>
-					<option> 内部流程 </option>
-					<option> 学习成长</option>
-				</select>
-			</li>
-			<li>二級維度 <input type= "text" id="category" value= {{category}}></li>
-			<li>指標名稱 <input type="text" id="title" value= {{title}}></li> 
-			<li>定義 <input type= "text" id="definition" value= {{definition}}></li>
-			<!--<li>數據類型 <input type= "text" id="type" value= {{type}}></li>-->
-			<li>數據類型
-				<select id="type" value={{type}}>
-					<option>數據類型</option>
-					<option>大好</option>
-					<option>小好</option>
-					<option>接近好</option>
-					<option>區間內好</option>
-				</select>
-			</li>  
-			<!--<li>評分方法 <input type= "text" id="mesure" value= {{mesure}}></li>-->
-			<li>評分方法
-				<select id="mesure" value={{mesure}}>
-					<option>評分方法</option>
-					<option>自比</option>
-					<option>他比</option>
-				</select>
-			</li> 
-			<li>適用團隊 <input type="text" id="teams" value= {{teams}}></li>
-			<li>評分者 <input type="text" id="remarker" value= {{remarker}}></li>
-			<li>指標來源 <input type="text" id="kpiSource" value= {{kpiSource}}></li>
-			<button id="save" class="btn btn-info"> 完成 </button>
-		</ul>
-	</div>
-{{/if}}
+	{{#if show}}
+		<div class="editKpiForm">
+			<h3>请勿使用全角字符以及中文标点!!</h3>
+			<ul class = 'inline'>
+				<!--<li>一級維度 <input type= "text" id="perspective" value= {{perspective}}></li>-->
+				<li>一級維度
+					<select id="perspective" value={{perspective}}>
+						<option> 一級維度</option>
+						<option> 财务</option>
+						<option>客户 </option>
+						<option> 内部流程 </option>
+						<option> 学习成长</option>
+					</select>
+				</li>
+				<li>二級維度 <input type= "text" id="category" value= {{category}}></li>
+				<li>指標名稱 <input type="text" id="title" value= {{title}}></li> 
+				<li>定義 <input type= "text" id="definition" value= {{definition}}></li>
+				<!--<li>數據類型 <input type= "text" id="type" value= {{type}}></li>-->
+				<li>數據類型
+					<select id="type" value={{type}} >
+						<option>數據類型</option>
+						<option>大好</option>
+						<option>小好</option>
+						<option>接近好</option>
+						<option>区间内好</option>
+					</select>
+				</li>  
+				<!--<li>評分方法 <input type= "text" id="mesure" value= {{mesure}}></li>-->
+				<li>評分方法
+					<select id="mesure" value={{mesure}}>
+						<option>評分方法</option>
+						<option>自比</option>
+						<option>他比</option>
+					</select>
+				</li> 
+				<li>部門類型 
+					<select id="deptCategory" value= {{deptCategory}}>
+						<option>部門類型</option>
+						<option>临床</option>
+						<option>医技</option>
+						<option>职能</option>
+						<option>行政</option>
+						<option>后勤</option>
+					</select>
+				</li>
+				<li>適用團隊 <input type="text" id="teams" value= {{teams}}></li>
+				<li>評分者 <input type="text" id="remarker" value= {{remarker}}></li>
+				<li>指標來源 <input type="text" id="kpiSource" value= {{kpiSource}}></li>
+				<button id="save" class="btn btn-info"> 完成 </button>
+			</ul>
+		</div>
+	{{/if}}
 </template>
 
 
@@ -179,12 +200,12 @@
 					<button id="editKpiForm" class="btn btn-info btn-xs"> 改 </button>
 				{{/if}} 
 				<strong>{{title}}</strong> [ <a href="/perspective&{{perspective}}"> {{perspective}}</a> / {{category}} ] <br>
-			
 		<ul>
 			<li>定義: {{definition}}</li>
 			<li>數據類型: {{type}}</li>  
 			<li>評分方法: {{mesure}}</li>
 			<li>適用團隊: {{teams}}</li>
+			<li>部門類型: {{deptCategory}}</li>
 			<li>評分者: {{remarker}}</li>
 			<li>指標來源: {{kpiSource}}</li>
 			<li>createdOn: {{createdOn}}</li> 
@@ -203,6 +224,26 @@
 			<li>數據類型: {{type}}</li>  
 			<li>評分方法: {{mesure}}</li>
 			<!-- li>適用團隊: {{teams}}</li -->
+			<!-- li>部門類型: {{deptCategory}}</li -->
+			<!-- li>評分者: {{remarker}}</li -->
+			<!-- li>指標來源: {{kpiSource}}</li -->
+			<!--li>createdOn: {{createdOn}}</li-->
+		</ul>
+	</article>
+</template>
+
+<template name="viewKpiFormInlineForEditTeam">
+	<article class="viewKpiFormInlineForEditTeam" >
+		<ul class="inline" >
+			<!--<a href="/perspective&{{perspective}}">-->
+			<!--<li>{{perspective}}</li>-->
+			<!--<li>{{category}}</li>-->
+			<!--<li><strong>{{title}}</strong></li>-->
+			<li>定義: {{definition}}</li>
+			<!--li>數據類型: {{type}}</li-->  
+			<!--li>評分方法: {{mesure}}</li-->
+			<li>適用團隊: {{teams}}</li>
+			<li>部門類型: {{deptCategory}}</li>
 			<!-- li>評分者: {{remarker}}</li -->
 			<!-- li>指標來源: {{kpiSource}}</li -->
 			<!--li>createdOn: {{createdOn}}</li-->
@@ -212,43 +253,51 @@
 
 
 <template name="newTeamForm">
-{{#if show}}
-	{{#if hospital}}
-		<div class="newTeamForm">
-			<div class="basics">
-				<input type="text" id="hospital" value={{hospital}} placeholder="hospital" /> 
-				<input type="text" id="team" placeholder="名稱" /> 
-				<input type="text" id="category" placeholder="科別/組別" />
-				<!--<button id="kpis" class="btn btn-info">指標</button>	-->
-			</div>
-			<div class="selectKpiForm" >
-				{{#each perspectives}}
-					<h4><div class="input-append">
-					 <input type="text" id="weight{{perspective}}" class="input-mini" placeholder=0 /> 
-					<span class="add-on">%</span></div>
-					{{perspective}} </h4> <br>
-					<ul>
-					{{#each kpis}}
-						<li>
-							<h5>
+	{{#if show}}
+		{{#if hospital}}
+			<div class="newTeamForm">
+				<div class="basics">
+					<input type="text" id="hospital" value={{hospital}} placeholder="hospital" /> 
+					<input type="text" id="team" placeholder="名稱" /> 
+					<input type="text" id="department" placeholder="科別/組別" />
+					<input type="text" id="category" placeholder="類型" />
+					<!--<button id="kpis" class="btn btn-info">指標</button>	-->
+				</div>
+
+				<div class="selectKpiForm" >
+					{{#each perspectives}}
+						<br>
+						<h4>
 							<div class="input-append">
-							<input type="text" id="weight{{title}}" class="input-mini" placeholder=0 /> 
-							<span class="add-on">%</span></div>
-							{{title}}</h5>
-							{{> viewKpiFormInline}}
-						</li>
+							 	<input type="text" id="weight{{perspective}}" class="input-mini" placeholder=0 /> 
+								<span class="add-on">%</span>
+							</div>
+							{{perspective}} 
+						</h4> 
+						<ul class = "inline">
+							{{#each kpis}}
+								<li>
+									<h5>
+										<div class="input-append">
+											<input type="text" id="weight{{title}}" class="input-mini" placeholder=0 /> 
+											<span class="add-on">%</span>
+										</div>
+										{{title}}
+									</h5>
+									{{> viewKpiFormInlineForEditTeam}}
+								</li>
+							{{/each}}
+						</ul>
+						<hr>
 					{{/each}}
-					</ul>
-					<hr>
-				{{/each}}
-			</div>	
-			<button id="save" class="btn btn-info"> 完成 </button>
-		</div>
-	{{else}}
-		<input type="text" id="hospital" placeholder="醫院名" />
-		{{> hospitals}}
+				</div>	
+				<button id="save" class="btn btn-info"> 完成 </button>
+			</div>
+		{{else}}
+			<input type="text" id="hospital" placeholder="醫院名" />
+			{{> hospitals}}
+		{{/if}}
 	{{/if}}
-{{/if}}
 </template>
 
 <template name="selectKPIForm">
@@ -257,81 +306,91 @@
 
 
 <template name= "editTeamForm">
-{{#if show}}
-	<div class="editTeamForm">
-		<div class="basics">
-			<input type="text" id="hospital"  value={{hospital}} /> 
-			<input type="text" id="team"  value="{{team}}" /> 
-			<input type="text" id="category"  value="{{category}}" />	
-		</div>
-		<div class="selectKPIForm" >
-			{{#each moreperspectives}}
-				<h4><div class="input-append">
-				<input type="text" id="weight{{perspective}}" class="input-mini" value="{{weight}}" /><span class="add-on">%</span></div> {{perspective}} </h4>
-				<ul>
-				{{#each kpis}}
-					<h5>
-					<li>
+	{{#if show}}
+		<div class="editTeamForm">
+			<div class="basics">
+				<input type="text" id="hospital"  value={{hospital}} /> 
+				<input type="text" id="team"  value={{team}} />
+				<input type="text" id="department" value={{department}} /> 
+				<input type="text" id="category"  value={{category}} />	
+			</div>
+			<div class="selectKPIForm" >
+				{{#each moreperspectives}}
+					
+					<br>
+					<h4>
 						<div class="input-append">
-						<input type="text" id="weight{{title}}" class="input-mini" value="{{weight}}" />
-						<span class="add-on">%</span></div>
-						{{title}} </h5>
-						{{> viewKpiFormInline}}
-					</li>
-					{{/each}}
-				</ul>
-			{{/each}}	
-		</div>	
-		<button id="save" class="btn btn-info"> 完成 </button>
-	</div>
-{{/if}}
+							<input type="text" id="weight{{perspective}}" class="input-mini" value="{{weight}}" /><span class="add-on">%</span>
+						</div> {{perspective}} 
+					</h4>
+					
+					<ul class = "inline">
+						{{#each kpis}}
+							<li>
+								<h5>
+									<div class="input-append">
+										<input type="text" id="weight{{title}}" class="input-mini" value="{{weight}}" />
+										<span class="add-on">%</span>
+									</div>
+									{{title}} 
+								</h5>
+								{{> viewKpiFormInlineForEditTeam}}
+							</li>
+						{{/each}}
+					</ul>
+
+				{{/each}}	
+			</div>	
+			<button id="save" class="btn btn-info"> 完成 </button>
+		</div>
+	{{/if}}
 </template>
 
 
 <template name="teams">
-{{#if show}}
-	{{#if hospital}}
-		<div class="hospital">
-			<h3> {{hospital}} </h3>
-			<hr>
-		</div>
-		<div class="teams">
-			<ol class="teams">
-			{{#each teams}}
-				<li> {{> team}} </li> 
+	{{#if show}}
+		{{#if hospital}}
+			<div class="hospital">
+				<h3> {{hospital}} </h3>
 				<hr>
-			{{/each}}
-			</ol>
-		</div>
-	{{else}}
-		<input type="text" id="hospital" placeholder="醫院名" />
-		{{> hospitals}}
-	{{/if}}
-{{/if}}  
+			</div>
+			<div class="teams">
+				<ol class="teams">
+					{{#each teams}}
+						<li> {{> team}} </li> 
+						<hr>
+					{{/each}}
+				</ol>
+			</div>
+		{{else}}
+			<input type="text" id="hospital" placeholder="醫院名" />
+			{{> hospitals}}
+		{{/if}}
+	{{/if}}  
 </template>
 
 
 <template name="hospitals">
-<h3> 醫院 </h3>
-<hr>
-<div class="hospitals">
-	<ol class="hospitals">
-	{{#each hospitals}}
-		<li>  {{this}}  </li> 
-	{{/each}}
-	</ol>
-</div>
+	<h3> 醫院 </h3>
+	<hr>
+	<div class="hospitals">
+		<ol class="hospitals">
+			{{#each hospitals}}
+				<li>  {{this}}  </li> 
+			{{/each}}
+		</ol>
+	</div>
 </template>
 
 
 
 
 <template name= "team">
-{{#if editting}}	
-	{{> editTeamForm}}
-{{else}}
-	{{> viewTeamForm}}
-{{/if}}
+	{{#if editting}}	
+		{{> editTeamForm}}
+	{{else}}
+		{{> viewTeamForm}}
+	{{/if}}
 </template>
 
 
@@ -339,31 +398,31 @@
 
 
 <template name= "viewTeamForm">
-<article class="viewTeamForm">
-	<h4> 
-		{{#if showButtons}}
-			<button id="removeTeam" class="btn btn-danger btn-xs"> 删 </button>
-			<button id="editTeamForm" class="btn btn-info btn-xs"> 改 </button>
-		{{/if}} 
- 		{{team}} {{category}}<!-- a href="/category&{{category}}">{{category}}</a --> 
-	 </h4>
-		 <div class="viewTeamForm">
-			<div class="teamKPIForm" >
-				{{#each perspectives}}
-					<h4>{{weight}}% {{perspective}}</h4>
-					<ul>
-					{{#each kpis}}
-						<li>
-							{{weight}}% {{title}}({{category}})
-							{{#if showKpiForm}}  
-							{{> viewKpiFormInline}}
-							{{/if}}
-						</li>
-					{{/each}}
-					</ul>
-				{{/each}}	
-			</div>	
-		</div>
-</article>
+	<article class="viewTeamForm">
+		<h4> 
+			{{#if showButtons}}
+				<button id="removeTeam" class="btn btn-danger btn-xs"> 删 </button>
+				<button id="editTeamForm" class="btn btn-info btn-xs"> 改 </button>
+			{{/if}} 
+	 		{{team}} [{{department}} {{category}}] <!-- a href="/category&{{category}}">{{category}}</a --> 
+		 </h4>
+			 <div class="viewTeamForm">
+				<div class="teamKPIForm" >
+					{{#each perspectives}}
+						<h4>{{weight}}% {{perspective}}</h4>
+						<ul>
+						{{#each kpis}}
+							<li>
+								{{weight}}% {{title}}({{category}})
+								{{#if showKpiForm}}  
+									{{> viewKpiFormInline}}
+								{{/if}}
+							</li>
+						{{/each}}
+						</ul>
+					{{/each}}	
+				</div>	
+			</div>
+	</article>
 </template>
 

@@ -58,6 +58,7 @@ clientKPIObj = (e, t) ->
 	type: getValue "#type" # the greater the better vs. the less the better vs. the closer the better
 	mesure: getValue "#mesure" # how to score
 	teams: getValue "#teams" # for which dept
+	deptCategory: getValue "#deptCategory" # for which dept category
 	remarker: getValue "#remarker" 
 	kpiSource: getValue "#kpiSource"
 	weight: 0
@@ -73,7 +74,8 @@ clientTeamObj = (o, e, t) ->
 	obj = { 
 		indx: (hospital + "-" + team) 
 		hospital: getValue "input#hospital"
-		team: getValue "input#team" 
+		team: getValue "input#team"
+		department: getValue "input#department" 
 		category: getValue "input#category"
 	}
 	obj.perspectives = ( 
