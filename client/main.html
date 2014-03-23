@@ -105,9 +105,11 @@
 		<div class="bsckpis">
 			<h3> 平衡記分卡指標庫 </h3>
 			<hr>
+			<ol>
 			{{#each kpis}}
-				{{> kpi}}
+				<li> {{> kpi}} </li> 
 			{{/each}}
+			</ol>
 		</div>
 	{{/if}}
 </template>
@@ -351,7 +353,9 @@
 		{{#if hospital}}
 			<div class="hospital">
 				<h3> {{hospital}} </h3>
+				[數據類型: 大好: 正指标, positive indicators; 小好: 逆指标, negative indicators]
 				<hr>
+
 			</div>
 			<div class="teams">
 				<ol class="teams">
