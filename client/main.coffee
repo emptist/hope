@@ -321,8 +321,9 @@ Template.hospitals.hospitals = ->
 	getSet share.Teams.find().fetch()
 
 Template.hospitals.events 
-	'click': (e,t) ->
-		setHospital e.currentTarget.value # doesn't work
+	"click .hospital": (e,t) ->
+		#console.log this, "cliicked #{@}"
+		setHospital this+"" # this is not a string but don't know what it is 
 
 
 #------------------------- teams ----------------------------------- 
