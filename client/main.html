@@ -25,7 +25,7 @@
 <template name="header">
 	{{#if showButtons}}
 		<ul class="nav pull-right">
-			<li>{{loginButtons}}</li>
+			<li>{{> loginButtons}}</li>
 		</ul>
 		<a class="brand" href="/"> HOPE </a>
 		<h1> 醫院績效管理 </h1>
@@ -33,13 +33,13 @@
 
 	{{#if adminLoggedIn}}
 		{{#if showButtons}}
-			<button id="bsckpis" class="btn btn-primary" "navbar-btn">指標</button>	
-			<button id="newKpiForm" class="btn btn-warning" "navbar-btn">添加指標</button>	
-			<button id="teams" class="btn btn-info" "navebar-btn">科組</button>
-			<button id="newTeamForm" class="btn btn-warning" "navebar-btn">添加團隊</button>
-			<button id="tasks" class="btn btn-info" "navebar-btn">Tasks</button>
-			<button id="newTaskForm" class="btn btn-warning" "navebar-btn">添加Task</button>
-			<button id="printable" class="btn btn-default" "navbar-btn" >{{currentMode}}</button>
+			<button id="bsckpis" class="btn btn-primary navbar-btn">指標</button>	
+			<button id="newKpiForm" class="btn btn-warning navbar-btn">添加指標</button>	
+			<button id="teams" class="btn btn-info navebar-btn">科組</button>
+			<button id="newTeamForm" class="btn btn-warning navebar-btn">添加團隊</button>
+			<button id="tasks" class="btn btn-info navebar-btn">Tasks</button>
+			<button id="newTaskForm" class="btn btn-warning navebar-btn">添加Task</button>
+			<button id="printable" class="btn btn-default navbar-btn" >{{currentMode}}</button>
 		{{/if}}
 	{{/if}}
 </template>

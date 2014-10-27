@@ -161,9 +161,9 @@ Meteor.startup -> # 开始
 
 
 #------------------------ Template.main------------------------------- 
-Template.main.adminLoggedIn = -> share.adminLoggedIn()
-Template.main.showButtons = ->
-	showAsEditMode()
+Template.main.helpers
+	adminLoggedIn: -> share.adminLoggedIn()
+	showButtons:  -> showAsEditMode()
 
 Template.main.events 
 	'click a[href^= "/"]': (e,t) ->  # means (a.href)a[href] ="/"
