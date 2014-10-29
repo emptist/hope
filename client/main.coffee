@@ -4,13 +4,13 @@
 #setHospital = (hospital)-> Meteor.call "share.SetHospital", hospital
 
 
-getHospital = -> 
+getHospital = ->
 	Session.get "hospital"
 
-setHospital = (hospital)-> 
+setHospital = (hospital)->
 	Session.set "hospital", hospital
 
-setTeam = (team)-> 
+setTeam = (team)->
 	Session.set "team", team
 
 setEditting = (self) ->
@@ -20,8 +20,8 @@ setEdittingFalse = (t)->
 	#Session.set "editting #{@._id}", false # <-- I haven't tried if this works
 	Session.set "editting #{t.data._id}", false
 
-#Meteor.subscribe "teamsChannel", getHospital() 
-Meteor.subscribe "teamsChannel" 
+#Meteor.subscribe "teamsChannel", getHospital()
+Meteor.subscribe "teamsChannel"
 Meteor.subscribe "bsckpisChannel"
 Meteor.subscribe "tasksChannel"
 Meteor.subscribe "hospitalsChannel"
@@ -31,7 +31,7 @@ Meteor.subscribe "hospitalsChannel"
 
 
 #------------------------ helpers ------------------------------------
-fourPerspectives = ['财务','客户','学习成长','内部流程'] 
+fourPerspectives = ['财务','客户','学习成长','内部流程']
 logCreated = (self)-> #console.log "created:", self.data
 logRendered = (self)->console.log "rendered:", self.data
 logDestroyed = (self)->console.log "destroyed:", self.data
@@ -59,7 +59,7 @@ clientKPIObj = (e, t) ->
 	mesure: getValue "#mesure" # how to score
 	teams: getValue "#teams" # for which dept
 	deptCategory: getValue "#deptCategory" # for which dept category
-	remarker: getValue "#remarker" 
+	remarker: getValue "#remarker"
 	kpiSource: getValue "#kpiSource"
 	weight: 0
 	suitable: false
@@ -71,14 +71,14 @@ clientTeamObj = (o, e, t) ->
 	team = getValue '#team'
 	#share.consolelog "in clientTeamObj t.perspectives() is now #{t.perspectives()}"
 
-	obj = { 
-		indx: (hospital + "-" + team) 
+	obj = {
+		indx: (hospital + "-" + team)
 		hospital: getValue "#hospital"
 		team: getValue "#team"
-		department: getValue "#department" 
+		department: getValue "#department"
 		category: getValue "#category"
 	}
-	obj.perspectives = ( 
+	obj.perspectives = (
 		# too complicated
 		# to read back:
 		#	for perspective in obj.BSCard
@@ -94,13 +94,13 @@ clientTeamObj = (o, e, t) ->
 			p.kpis= (
 				for kpi in data.kpis when getValue("input#weight#{kpi.title}") > 0
 					kpi.weight= getValue "input#weight#{kpi.title}"
-					kpi 
+					kpi
 				)
-			p 
+			p
 		)
-	###	
+	###
 		for perspective in fourPerspectives
-			p = { 
+			p = {
 				perspective: perspective
 				kpis: share.KPIs.find(perspective: perspective).fetch()
 			}
@@ -118,8 +118,8 @@ clientTeamObj = (o, e, t) ->
 	###
 	share.consolelog obj
 
-viewDetail = (viewName, t)-> 
-	Backbone.history.navigate '/' + viewName + '&' +  t.find('#' + viewName).value, true #decodeURI 
+viewDetail = (viewName, t)->
+	Backbone.history.navigate '/' + viewName + '&' +  t.find('#' + viewName).value, true #decodeURI
 
 
 #------------------------ router ------------------------------------
@@ -134,11 +134,11 @@ HOPERouter = Backbone.Router.extend
 		"teams": "teams"
 		"newKpiForm": "newKpiForm"
 		"newTeamForm": "newTeamForm"
-		#"hospitals": "hospitals" 
+		#"hospitals": "hospitals"
 		":detail": "detail" # 查看single object, see below
-		
+
 	main: -> logSetCurrentView "main"
-	bsckpis: ->	logSetCurrentView "bsckpis"	
+	bsckpis: ->	logSetCurrentView "bsckpis"
 	teams: -> logSetCurrentView "teams"
 	newKpiForm: -> logSetCurrentView "newKpiForm"
 	newTeamForm: -> logSetCurrentView "newTeamForm"
@@ -160,12 +160,12 @@ Meteor.startup -> # 开始
 
 
 
-#------------------------ Template.main------------------------------- 
+#------------------------ Template.main-------------------------------
 Template.main.helpers
 	adminLoggedIn: -> share.adminLoggedIn()
 	showButtons:  -> showAsEditMode()
 
-Template.main.events 
+Template.main.events
 	'click a[href^= "/"]': (e,t) ->  # means (a.href)a[href] ="/"
 		# Note: Backbone.history.navigate decodeURI e.currentTarget.pathname will not work!
 		Backbone.history.navigate e.currentTarget.pathname, true
@@ -174,58 +174,62 @@ Template.main.events
 
 
 #------------------------- Template.header -----------------------------
-Template.header.currentMode = -> 
-	share.consolelog if showAsEditMode() is true then "打印模式" else "編輯模式"
+Template.header.helpers
+  currentMode = ->
+		share.consolelog if showAsEditMode() is true then "打印模式" else "編輯模式"
 
 
-Template.header.showButtons = -> showAsEditMode()
+ 	showButtons = -> showAsEditMode()
 
 
-Template.header.adminLoggedIn = -> share.adminLoggedIn()
+	adminLoggedIn = -> share.adminLoggedIn()
 
 
 Template.header.events
-	'click #bsckpis': -> Backbone.history.navigate '/bsckpis', true 
+	'click #bsckpis': -> Backbone.history.navigate '/bsckpis', true
 	'click #teams': -> Backbone.history.navigate '/teams', true
 	'click #tasks': -> Backbone.history.navigate '/tasks', true
 	'click #newKpiForm': ->	Backbone.history.navigate '/newKpiForm', true
 	'click #newTeamForm': -> Backbone.history.navigate '/newTeamForm', true
 	'click #newTaskForm': -> Backbone.history.navigate '/newTaskForm', true
 	'click #printable': -> Session.set "showButtons", not showAsEditMode()
-	#'click #hospitals': -> Backbone.history.navigate '/hospitals', true 
-	
+	#'click #hospitals': -> Backbone.history.navigate '/hospitals', true
+
 
 
 
 #------------------------- bsckpis ---------------------------------------
-Template.bsckpis.show = ->
-	isViewing "bsckpis","perspective" #,"newKpiForm"
+Template.bsckpis.helpers
+	show = ->
+		isViewing "bsckpis","perspective" #,"newKpiForm"
 
-Template.bsckpis.showButtons = ->
-	showAsEditMode()
+	showButtons = ->
+		showAsEditMode()
 
-Template.bsckpis.kpis = ->
-	if isViewing "perspective"
-		share.KPIs.find perspective: Session.get "currentDetail", sort:{perspective: -1, category: -1, title: -1} 
-	else
-		share.consolelog share.KPIs.find {}, sort:{perspective: -1, category: -1, title: -1}
+	kpis = ->
+		if isViewing "perspective"
+			share.KPIs.find perspective: Session.get "currentDetail", sort:{perspective: -1, category: -1, title: -1}
+		else
+			share.consolelog share.KPIs.find {}, sort:{perspective: -1, category: -1, title: -1}
 
 
 
 #------------------------- repeatedKpi ----------------------------------
 repeatedKpi = -> Session.get "repeatedKpi"
 
-Template.repeatedKpi.show = -> 
-	repeatedKpi() and (isViewing "newKpiForm")
+Template.repeatedKpi.helpers
+	show = ->
+		repeatedKpi() and (isViewing "newKpiForm")
 
-Template.repeatedKpi.kpis = ->
-	Session.set "editting #{repeatedKpi()}"
-	(share.KPIs.find _id: do repeatedKpi).fetch()
+	kpis = ->
+		Session.set "editting #{repeatedKpi()}"
+		(share.KPIs.find _id: do repeatedKpi).fetch()
 
 
 
 #------------------------- newKpiForm ----------------------------------
-Template.newKpiForm.show = -> isViewing "newKpiForm","perspective" 
+Template.newKpiForm.helpers
+	show = -> isViewing "newKpiForm","perspective"
 
 
 Template.newKpiForm.events
@@ -234,8 +238,8 @@ Template.newKpiForm.events
 		    input = t.find('input#title').value.trim()
 		    Session.set "repeatedKpi", (share.KPIs.findOne title:input)?._id
 
-	'click #save': (e,t) -> 
-		Meteor.call "kpi", 
+	'click #save': (e,t) ->
+		Meteor.call "kpi",
 			clientKPIObj e,t
 			(err, id)->
 				viewDetail "perspective",t
@@ -243,50 +247,54 @@ Template.newKpiForm.events
 
 
 #------------------------- kpi -------------------------------------------
-Template.kpi.editting = ->
-	Session.get "editting #{@._id}"
+Template.kpi.helpers
+	editting = ->
+		Session.get "editting #{@._id}"
 
-Template.kpi.showButtons =->
-	showAsEditMode()
+	showButtons =->
+		showAsEditMode()
 
 
 #------------------------- editKpiForm -----------------------------------
-Template.editKpiForm.show = ->
-	true #since this should display in place so don't use isViewing "editKpiForm"
+Template.editKpiForm.helpers
+	show = ->
+		true #since this should display in place so don't use isViewing "editKpiForm"
 
-Template.editKpiForm.rendered = ->
-	logRendered this
+	rendered = ->
+		logRendered this
 
 
 Template.editKpiForm.events
-	'click #save': (e,t) -> 
-		Meteor.call "kpiId", 
+	'click #save': (e,t) ->
+		Meteor.call "kpiId",
 			@_id
 			clientKPIObj e,t
 			(err, id) ->
-				share.consolelog "editKpiForm event save #{t.data._id}" # is known that share.._id here is undefined 
+				share.consolelog "editKpiForm event save #{t.data._id}" # is known that share.._id here is undefined
 				setEdittingFalse(t)
-		
+
 
 
 #------------------------- viewKpiForm ----------------------------------
-Template.viewKpiForm.showButtons = ->
-	isViewing("bsckpis", "perspective","newKpiForm") and showAsEditMode()
+Template.viewKpiForm.helpers
+	showButtons = ->
+		isViewing("bsckpis", "perspective","newKpiForm") and showAsEditMode()
 
 Template.viewKpiForm.events
-	
+
 	'click #editKpiForm':(e,t) ->
 		share.consolelog "viewKpiForm event editKpiForm #{@._id}"
 		setEditting(this)
-	
+
 	'click #removeKPI':	(e,t) ->
 		share.consolelog "viewKpiForm event removeKPI #{@._id}"
 		Meteor.call "removeKPI", @._id
 
-Template.viewKpiForm.created = ->
-	logCreated(this)
-Template.viewKpiForm.rendered = ->
-	logRendered(this)
+Template.viewKpiForm.helpers
+	created = ->
+		logCreated(this)
+	rendered = ->
+		logRendered(this)
 
 
 #------------------------- viewKpiFormInline ----------------------------------
@@ -295,7 +303,7 @@ Template.viewKpiFormInline.showButtons = ->
 	isViewing("bsckpis", "perspective") and showAsEditMode()
 
 Template.viewKpiFormInline.events
-	
+
 	'click #editKpiForm':(e,t) ->
 		share.consolelog "viewKpiForm event editKpiForm #{@._id}"
 		setEditting(this)
@@ -304,7 +312,7 @@ Template.viewKpiFormInline.events
 		share.consolelog "viewKpiForm event removeKPI #{@._id}"
 		Meteor.call "removeKPI", @._id
 ###
-	
+
 
 
 ###----------------------- hospitals -------------------------------
@@ -317,30 +325,31 @@ getSet = (aCollection) ->
 			set.push h if h?.length >1
 	set
 
-Template.hospitals.hospitals = ->
-	getSet share.Teams.find().fetch()
+Template.hospitals.helpers
+	hospitals = ->
+		getSet share.Teams.find().fetch()
 
-Template.hospitals.events 
+Template.hospitals.events
 	"click .hospital": (e,t) ->
 		#console.log this, "cliicked #{@}"
-		setHospital this+"" # this is not a string but don't know what it is 
+		setHospital this+"" # this is not a string but don't know what it is
 
 
-#------------------------- teams ----------------------------------- 
+#------------------------- teams -----------------------------------
 Template.teams.show = ->
-	isViewing "teams", "team", "category"  
-	
+	isViewing "teams", "team", "category"
+
 Template.teams.showButtons = -> # 打印模式不显示按钮
 	showAsEditMode()
 
 
 Template.teams.teams = ->  # class 三级分级 type 公立等 title 医院名
-	if isViewing "teams" 
-		share.consolelog share.Teams.find hospital: getHospital() #, 
+	if isViewing "teams"
+		share.consolelog share.Teams.find hospital: getHospital() #,
 			#sort: { category: -1, team: -1}
 	else if isViewing "category"
 		share.Teams.find {hospital: getHospital(), category: Session.get 'currentDetail'}
-	else if isViewing("team") 
+	else if isViewing("team")
 		share.Teams.find indx: "#{getHospital()}-#{Session.get 'currentDetail'}"
 
 
@@ -380,18 +389,18 @@ Template.newTeamForm.perspectives = ->
 		###
 		fetchKpis = (perspective)->
 			r = share.KPIs.find(perspective: perspective).fetch()
-			for kpi in r 
+			for kpi in r
 				if (@find("input#team") in kpi.teams?) or @find("input#category") in kpi.teams?
 					kpi.suitable = 1
 				else
-					kpi.suitable = 0 	
+					kpi.suitable = 0
 			r
-		### 
+		###
 
-		p = { 
+		p = {
 			perspective: perspective
 			kpis: share.KPIs.find(perspective: perspective).fetch()
-			#kpis: fetchKpis(perspective).sort (a,b)-> a.suitable - b.suitable  
+			#kpis: fetchKpis(perspective).sort (a,b)-> a.suitable - b.suitable
 		}
 		Session.set perspective, p  # there must be more effecient way to get these
 		p
@@ -404,9 +413,9 @@ Template.newTeamForm.events
 	'click #kpis':(e,t)->
 		Session.set "showNewTeamKpiForm", true
 	###
-	'click button#save': (e,t) -> 
+	'click button#save': (e,t) ->
 		console.log t.find( "input#team").value
-		Meteor.call "team", 
+		Meteor.call "team",
 			share.consolelog clientTeamObj this, e, t
 			(err, id)->
 				#Session.set "currentView", "hospital"
@@ -427,7 +436,7 @@ Template.editTeamForm.show = ->
 Template.editTeamForm.moreperspectives = ->
 	#@.perspectives
 	getPerspective = (perspective, perspectives)->
-		(p for p in perspectives when p.perspective is perspective)[0] 
+		(p for p in perspectives when p.perspective is perspective)[0]
 
 	#getPWeight = (perspective, perspectives)->
 	#	getPerpective(perspective, perspectives).weight
@@ -438,35 +447,35 @@ Template.editTeamForm.moreperspectives = ->
 	for perspective in fourPerspectives
 		thisPps = getPerspective(perspective, @perspectives)
 		thisKpis = thisPps.kpis
-		p = { 
+		p = {
 			perspective: perspective
 			weight: thisPps.weight
 			kpis: share.KPIs.find(perspective: perspective).fetch()
 		}
 
-		for kpi in p.kpis 
+		for kpi in p.kpis
 			kpi.weight = getKPIWeight(kpi, thisKpis) #find out the specific perspective weight
 
 		Session.set perspective, p  # there must be more effecient way to get these
 		p
-	
+
 
 Template.editTeamForm.events
 	'keydown input#hospital': (e,t)->
 		if e.keyCode is 13
 			share.consolelog setHospital e.target.value
-	
-	'click #save': (e,t) -> 
-		Meteor.call "team", 
+
+	'click #save': (e,t) ->
+		Meteor.call "team",
 			clientTeamObj this, e, t
 			(err, id) ->
-				share.consolelog "editTeamForm event save #{t.data._id}" # is known that share.._id here is undefined 
+				share.consolelog "editTeamForm event save #{t.data._id}" # is known that share.._id here is undefined
 				setEdittingFalse(t)
 ###			Session.set "editTeamKPIForm #{t.data._id}", false
-				
-	
+
+
 	'click #editTeamKPIForm': (e,t) ->
-		Session.set "editTeamKPIForm #{t.data._id}", true	
+		Session.set "editTeamKPIForm #{t.data._id}", true
 ###
 
 
@@ -495,13 +504,13 @@ Template.viewTeamForm.rendered = ->
 	logRendered(this)
 
 #Template.viewTeamForm.perspectives = ->
-#	this.bscs.perspectives 
+#	this.bscs.perspectives
 
 Template.viewTeamForm.events
 	'click #editTeamForm':(e,t) ->
 		share.consolelog "viewTeamForm event editTeamForm #{@._id}"
 		setEditting(this)
-	
+
 	'click #removeTeam':	(e,t) ->
 		share.consolelog "viewTeamForm event removeTeam #{@._id}"
 		Meteor.call "removeTeam", @._id
@@ -536,7 +545,7 @@ Template.editTeamKPIForm.events
 ### ----------------------- newTaskForm --------------------------------
 ###
 addTask = (value) ->
-	Meteor.call "task",  text:value 
+	Meteor.call "task",  text:value
 
 Template.newTaskForm.show = ->
 		share.isViewing "newTaskForm"
@@ -577,8 +586,8 @@ Template.tasks.items = ->
 ###	------------------------ item --------------------------------------
 ###
 remove = (item) ->
-	id = share.Tasks.findOne(item)._id 
-	Meteor.call "removeTask", id 
+	id = share.Tasks.findOne(item)._id
+	Meteor.call "removeTask", id
 
 
 Template.item.showButtons = ->
