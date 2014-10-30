@@ -5,7 +5,8 @@
 
 coffeescript
 backbone
-accounts-ui
 accounts-password
 meteor-platform
 mizzao:bootstrap-3
+accounts-base
+mrt:accounts-ui-bootstrap-3-blaze

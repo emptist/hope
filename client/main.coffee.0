@@ -175,14 +175,14 @@ Template.main.events
 
 #------------------------- Template.header -----------------------------
 Template.header.helpers
-  currentMode = ->
+  currentMode:  ->
 		share.consolelog if showAsEditMode() is true then "打印模式" else "編輯模式"
 
 
- 	showButtons = -> showAsEditMode()
+ 	showButtons: -> showAsEditMode()
 
 
-	adminLoggedIn = -> share.adminLoggedIn()
+	adminLoggedIn: -> share.adminLoggedIn()
 
 
 Template.header.events
@@ -200,13 +200,13 @@ Template.header.events
 
 #------------------------- bsckpis ---------------------------------------
 Template.bsckpis.helpers
-	show = ->
+	show: ->
 		isViewing "bsckpis","perspective" #,"newKpiForm"
 
-	showButtons = ->
+	showButtons: ->
 		showAsEditMode()
 
-	kpis = ->
+	kpis: ->
 		if isViewing "perspective"
 			share.KPIs.find perspective: Session.get "currentDetail", sort:{perspective: -1, category: -1, title: -1}
 		else
@@ -218,10 +218,10 @@ Template.bsckpis.helpers
 repeatedKpi = -> Session.get "repeatedKpi"
 
 Template.repeatedKpi.helpers
-	show = ->
+	show: ->
 		repeatedKpi() and (isViewing "newKpiForm")
 
-	kpis = ->
+	kpis: ->
 		Session.set "editting #{repeatedKpi()}"
 		(share.KPIs.find _id: do repeatedKpi).fetch()
 
@@ -229,7 +229,7 @@ Template.repeatedKpi.helpers
 
 #------------------------- newKpiForm ----------------------------------
 Template.newKpiForm.helpers
-	show = -> isViewing "newKpiForm","perspective"
+	show: -> isViewing "newKpiForm","perspective"
 
 
 Template.newKpiForm.events
@@ -248,19 +248,19 @@ Template.newKpiForm.events
 
 #------------------------- kpi -------------------------------------------
 Template.kpi.helpers
-	editting = ->
+	editting: ->
 		Session.get "editting #{@._id}"
 
-	showButtons =->
+	showButtons: ->
 		showAsEditMode()
 
 
 #------------------------- editKpiForm -----------------------------------
 Template.editKpiForm.helpers
-	show = ->
+	show: ->
 		true #since this should display in place so don't use isViewing "editKpiForm"
 
-	rendered = ->
+	rendered: ->
 		logRendered this
 
 
@@ -277,7 +277,7 @@ Template.editKpiForm.events
 
 #------------------------- viewKpiForm ----------------------------------
 Template.viewKpiForm.helpers
-	showButtons = ->
+	showButtons: ->
 		isViewing("bsckpis", "perspective","newKpiForm") and showAsEditMode()
 
 Template.viewKpiForm.events
@@ -291,9 +291,9 @@ Template.viewKpiForm.events
 		Meteor.call "removeKPI", @._id
 
 Template.viewKpiForm.helpers
-	created = ->
+	created: ->
 		logCreated(this)
-	rendered = ->
+	rendered: ->
 		logRendered(this)
 
 
@@ -317,6 +317,7 @@ Template.viewKpiFormInline.events
 
 ###----------------------- hospitals -------------------------------
 ###
+
 getSet = (aCollection) ->
 	set = []
 	for item in aCollection
@@ -326,7 +327,7 @@ getSet = (aCollection) ->
 	set
 
 Template.hospitals.helpers
-	hospitals = ->
+	hospitals: ->
 		getSet share.Teams.find().fetch()
 
 Template.hospitals.events
@@ -336,25 +337,26 @@ Template.hospitals.events
 
 
 #------------------------- teams -----------------------------------
-Template.teams.show = ->
-	isViewing "teams", "team", "category"
+Template.teams.helpers
+	show: ->
+		isViewing "teams", "team", "category"
 
-Template.teams.showButtons = -> # 打印模式不显示按钮
-	showAsEditMode()
-
-
-Template.teams.teams = ->  # class 三级分级 type 公立等 title 医院名
-	if isViewing "teams"
-		share.consolelog share.Teams.find hospital: getHospital() #,
-			#sort: { category: -1, team: -1}
-	else if isViewing "category"
-		share.Teams.find {hospital: getHospital(), category: Session.get 'currentDetail'}
-	else if isViewing("team")
-		share.Teams.find indx: "#{getHospital()}-#{Session.get 'currentDetail'}"
+	showButtons: -> # 打印模式不显示按钮
+		showAsEditMode()
 
 
-Template.teams.hospital = ->
-	getHospital()
+	teams: ->  # class 三级分级 type 公立等 title 医院名
+		if isViewing "teams"
+			share.consolelog share.Teams.find hospital: getHospital() #,
+				#sort: { category: -1, team: -1}
+		else if isViewing "category"
+			share.Teams.find {hospital: getHospital(), category: Session.get 'currentDetail'}
+		else if isViewing("team")
+			share.Teams.find indx: "#{getHospital()}-#{Session.get 'currentDetail'}"
+
+
+	hospital: ->
+		getHospital()
 
 Template.teams.events
 	'keydown input#hospital': (e,t)->
@@ -366,44 +368,21 @@ Template.teams.events
 
 
 #------------------------- newTeamForm -----------------------------
-Template.newTeamForm.show = ->
-	isViewing "newTeamForm" #,"teams"
-###
-Template.newTeamForm.showNewTeamKpiForm = ->
-	isViewing('newTeamForm') and Session.get "showNewTeamKpiForm"
-###
-###
-Template.newTeamForm.created = ->
-	logCreated(this)
-Template.newTeamForm.rendered = ->
-	logRendered(this)
-Template.newTeamForm.destroyed = ->
-	logDestroyed(this)
-###
+Template.newTeamForm.helpers
+	show: ->
+		isViewing "newTeamForm" #,"teams"
 
-Template.newTeamForm.hospital = ->
-	Session.get "hospital"
+	hospital: ->
+		Session.get "hospital"
 
-Template.newTeamForm.perspectives = ->
-	for perspective in fourPerspectives
-		###
-		fetchKpis = (perspective)->
-			r = share.KPIs.find(perspective: perspective).fetch()
-			for kpi in r
-				if (@find("input#team") in kpi.teams?) or @find("input#category") in kpi.teams?
-					kpi.suitable = 1
-				else
-					kpi.suitable = 0
-			r
-		###
+	perspectives: ->
+		for perspective in fourPerspectives
+			p =
+				perspective: perspective
+				kpis: share.KPIs.find(perspective: perspective).fetch()
 
-		p = {
-			perspective: perspective
-			kpis: share.KPIs.find(perspective: perspective).fetch()
-			#kpis: fetchKpis(perspective).sort (a,b)-> a.suitable - b.suitable
-		}
-		Session.set perspective, p  # there must be more effecient way to get these
-		p
+			Session.set perspective, p  # there must be more effecient way to get these
+			p
 
 Template.newTeamForm.events
 	'keydown input#hospital': (e,t)->
